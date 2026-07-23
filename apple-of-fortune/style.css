@@ -217,67 +217,19 @@ body {
    ICONS: Apple & Core
    ============================================================ */
 .apple {
-    width: 65%;
-    height: 65%;
-    background: radial-gradient(circle at 32% 28%, #ff5555, #8b0000);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    width: 85%;
+    height: 85%;
+    background: url('assets/apple_0.png') no-repeat center center;
+    background-size: contain;
     position: relative;
-    box-shadow: inset -2px -2px 5px rgba(0,0,0,0.35);
-}
-.apple::before {
-    content: '';
-    position: absolute;
-    top: -18%;
-    left: 46%;
-    width: 4px;
-    height: 22%;
-    background: #4a2f1d;
-    border-radius: 2px;
-    transform: rotate(12deg);
-}
-.apple::after {
-    content: '';
-    position: absolute;
-    top: -12%;
-    left: 52%;
-    width: 13px;
-    height: 9px;
-    background: #3d9e44;
-    border-radius: 10px 0;
-    transform: rotate(20deg);
 }
 
 .core {
-    width: 55%;
-    height: 65%;
-    background: radial-gradient(circle at 50% 50%, #f4e8c1, #c9a84c);
-    border-radius: 18px;
+    width: 85%;
+    height: 85%;
+    background: url('assets/apple_1.png') no-repeat center center;
+    background-size: contain;
     position: relative;
-    clip-path: polygon(22% 0,78% 0,100% 22%,60% 50%,100% 78%,78% 100%,22% 100%,0 78%,40% 50%,0 22%);
-}
-.core::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 10%;
-    width: 80%; height: 20%;
-    background: radial-gradient(circle at 35% 35%, #ff5555, #8b0000);
-    border-radius: 50% 50% 0 0;
-}
-.core::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 10%;
-    width: 80%; height: 20%;
-    background: radial-gradient(circle at 35% 35%, #ff5555, #8b0000);
-    border-radius: 0 0 50% 50%;
-}
-.core .seeds {
-    position: absolute;
-    top: 44%; left: 44%;
-    width: 4px; height: 7px;
-    background: #333;
-    border-radius: 50%;
-    box-shadow: 7px 0 0 #333;
 }
 
 /* ============================================================
