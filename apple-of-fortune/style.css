@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #000;
+    background: #000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,72 +16,62 @@ body {
     color: #fff;
 }
 
+/* ============================================================
+   MAIN CONTAINER
+   Uses flexbox column: header → game area → bottom bar
+   ============================================================ */
 .game-container {
     position: relative;
-    width: 100%;
-    max-width: 450px;
-    height: 100%;
-    max-height: 900px;
+    width: min(100vw, calc(100vh * 394 / 854));
+    height: 100vh;
     background: url('assets/frame0.png') no-repeat center center;
-    background-size: cover;
+    background-size: 100% 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
-.background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
+.background, .bg-blur { display: none; }
 
-.bg-blur {
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 30, 10, 0.4);
-    backdrop-filter: blur(2px);
-}
-
+/* ============================================================
+   HEADER (fixed height)
+   ============================================================ */
 .header {
-    position: relative;
-    z-index: 10;
+    flex-shrink: 0;
+    height: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    margin-top: env(safe-area-inset-top, 20px);
+    padding: 0 16px;
+    z-index: 10;
 }
 
 .icon-btn {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1.5px solid rgba(255,255,255,0.4);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0,0,0,0.35);
+    flex-shrink: 0;
 }
 
 .balance-container {
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 15px;
+    gap: 6px;
+    background: rgba(0,0,0,0.5);
+    padding: 5px 12px;
     border-radius: 20px;
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 15px;
 }
 
-.balance-container .currency {
-    margin-left: 5px;
-    font-size: 14px;
-    color: #aaa;
-}
+.balance-container .currency { font-size: 12px; color: #aaa; }
 
 .balance-container .add-btn {
     background: #4caf50;
@@ -90,162 +80,131 @@ body {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    margin-right: 10px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 16px;
-    line-height: 1;
-}
-
-.title {
-    position: relative;
-    z-index: 10;
+    line-height: 20px;
     text-align: center;
-    font-size: 12px;
-    letter-spacing: 1px;
-    color: #ddd;
-    margin-bottom: 20px;
+    padding: 0;
 }
 
-.game-area {
-    position: relative;
+/* title row */
+.title {
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #ccc;
+    margin-bottom: 6px;
     z-index: 10;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    padding: 0 10px;
-    margin-bottom: 10px;
-    min-height: 0; /* allows flex item to shrink */
 }
 
+/* ============================================================
+   GAME AREA  (takes all remaining space between header & bottom)
+   ============================================================ */
+.game-area {
+    flex: 1 1 0;
+    min-height: 0;          /* CRITICAL – lets flex child shrink below content */
+    display: flex;
+    align-items: stretch;
+    padding: 0 8px;
+    z-index: 10;
+    overflow: hidden;
+}
+
+/* ---- Multiplier sidebar ---- */
 .multipliers {
+    width: 52px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding-right: 10px;
-    width: 60px;
-    height: 100%;
+    padding-right: 4px;
 }
 
 .mult-row {
-    font-size: 12px;
-    color: #6a9b7e;
-    font-weight: bold;
-    text-align: right;
-    transition: all 0.3s;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    font-size: 10px;
+    font-weight: 700;
+    color: #5a8a6a;
+    transition: color 0.25s, text-shadow 0.25s;
+    white-space: nowrap;
 }
 
 .mult-row.active {
-    color: #00ff00;
-    text-shadow: 0 0 5px #00ff00;
-    transform: scale(1.1);
+    color: #00ff55;
+    text-shadow: 0 0 6px #00ff55;
 }
 
-.mult-row.passed {
-    color: #4caf50;
-}
+.mult-row.passed { color: #3dba5f; }
 
+/* ---- Grid ---- */
 .grid {
+    flex: 1 1 0;
+    min-width: 0;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    gap: 2%; /* proportional gap */
-    height: 100%;
-    aspect-ratio: 0.5; /* 5 cols / 10 rows */
-    margin: 0 auto;
+    gap: 4px;
 }
 
+/* Each cell is square → enforced by padding-top trick */
 .cell {
     position: relative;
     width: 100%;
-    height: 100%; /* fill the grid row */
+    /* Force square: height = width via aspect-ratio.
+       Since grid-template-rows: 10fr keeps height equal to row height,
+       we just make sure the inner element is square. */
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    perspective: 1000px;
+    perspective: 600px;
 }
 
+/* Inner flip container – SQUARE, centered inside the cell */
 .cell-inner {
-    width: 95%;
-    height: 95%;
+    /* Use min of 100% width and 100% height so it's always square */
+    width: 100%;
+    height: 100%;
     position: relative;
-    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
     transform-style: preserve-3d;
 }
 
-.cell.revealed .cell-inner {
-    transform: rotateY(180deg);
-}
+.cell.revealed .cell-inner { transform: rotateY(180deg); }
 
-/* Wood empty cell styling */
-.wood-bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 20%, #764426, #41200e 70%, #1a0802);
-    box-shadow: inset 0 -4px 6px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.2), 0 4px 8px rgba(0,0,0,0.5);
-    border: 1px solid #1a0f08;
-    backface-visibility: hidden;
-}
-
-.wood-bg::before {
-    content: '';
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 90%;
-    border-radius: 50%;
-    background: repeating-linear-gradient(
-        135deg,
-        transparent,
-        transparent 5px,
-        rgba(0,0,0,0.05) 6px,
-        rgba(0,0,0,0.05) 10px
-    );
-    pointer-events: none;
-}
-
-/* Covered state */
+/* ---- Front faces ---- */
+.wood-bg,
 .covered-bg {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 20%, #d46327, #802f0d);
-    box-shadow: inset 0 -3px 5px #f4d03f, 0 5px 10px rgba(0,0,0,0.5);
-    border-bottom: 3px solid #f4d03f;
     backface-visibility: hidden;
-    transform: scale(0.9);
 }
 
-.covered-bg::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 20%;
-    width: 60%;
-    height: 15px;
-    background: radial-gradient(ellipse, rgba(0,0,0,0.8), transparent);
-    filter: blur(2px);
-    z-index: -1;
+.wood-bg {
+    background: url('assets/wood_circle.png') no-repeat center center / cover;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5);
 }
 
-/* Back face (Apple or Core) */
+.covered-bg {
+    background: url('assets/covered_circle.png') no-repeat center center / cover;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+}
+
+.cell.active .covered-bg {
+    box-shadow: 0 0 0 2px #00ff55, 0 0 12px #00ff55, 0 3px 8px rgba(0,0,0,0.5);
+}
+
+/* ---- Back face ---- */
 .cell-back {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #3e1f10, #140804);
+    background: radial-gradient(circle at 35% 25%, #3e1f10, #100500);
     box-shadow: inset 0 0 10px #000;
     transform: rotateY(180deg);
     backface-visibility: hidden;
@@ -254,156 +213,142 @@ body {
     align-items: center;
 }
 
-/* The active row indicator */
-.cell.active .covered-bg {
-    box-shadow: inset 0 -3px 5px #f4d03f, 0 0 15px #00ff00, 0 5px 10px rgba(0,0,0,0.5);
-    border: 2px solid #00ff00;
-}
-
-/* Apple Icon */
+/* ============================================================
+   ICONS: Apple & Core
+   ============================================================ */
 .apple {
-    width: 70%;
-    height: 70%;
-    background: radial-gradient(circle at 30% 30%, #ff4b4b, #9b0000);
+    width: 65%;
+    height: 65%;
+    background: radial-gradient(circle at 32% 28%, #ff5555, #8b0000);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     position: relative;
-    box-shadow: inset -3px -3px 5px rgba(0,0,0,0.3);
+    box-shadow: inset -2px -2px 5px rgba(0,0,0,0.35);
 }
 .apple::before {
     content: '';
     position: absolute;
-    top: -15%;
-    left: 45%;
+    top: -18%;
+    left: 46%;
     width: 4px;
-    height: 25%;
+    height: 22%;
     background: #4a2f1d;
     border-radius: 2px;
-    transform: rotate(15deg);
+    transform: rotate(12deg);
 }
 .apple::after {
     content: '';
     position: absolute;
-    top: -10%;
-    left: 50%;
-    width: 15px;
-    height: 10px;
-    background: #4caf50;
+    top: -12%;
+    left: 52%;
+    width: 13px;
+    height: 9px;
+    background: #3d9e44;
     border-radius: 10px 0;
     transform: rotate(20deg);
 }
 
-/* Apple Core Icon */
 .core {
-    width: 60%;
-    height: 70%;
-    background: radial-gradient(circle at 50% 50%, #f4e8c1, #d4b872);
-    border-radius: 20px;
+    width: 55%;
+    height: 65%;
+    background: radial-gradient(circle at 50% 50%, #f4e8c1, #c9a84c);
+    border-radius: 18px;
     position: relative;
-    clip-path: polygon(20% 0, 80% 0, 100% 20%, 60% 50%, 100% 80%, 80% 100%, 20% 100%, 0 80%, 40% 50%, 0 20%);
+    clip-path: polygon(22% 0,78% 0,100% 22%,60% 50%,100% 78%,78% 100%,22% 100%,0 78%,40% 50%,0 22%);
 }
 .core::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 10%;
-    width: 80%;
-    height: 20%;
-    background: radial-gradient(circle at 30% 30%, #ff4b4b, #9b0000);
+    top: 0; left: 10%;
+    width: 80%; height: 20%;
+    background: radial-gradient(circle at 35% 35%, #ff5555, #8b0000);
     border-radius: 50% 50% 0 0;
 }
 .core::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 10%;
-    width: 80%;
-    height: 20%;
-    background: radial-gradient(circle at 30% 30%, #ff4b4b, #9b0000);
+    bottom: 0; left: 10%;
+    width: 80%; height: 20%;
+    background: radial-gradient(circle at 35% 35%, #ff5555, #8b0000);
     border-radius: 0 0 50% 50%;
 }
 .core .seeds {
     position: absolute;
-    top: 45%;
-    left: 45%;
-    width: 4px;
-    height: 8px;
+    top: 44%; left: 44%;
+    width: 4px; height: 7px;
     background: #333;
     border-radius: 50%;
-    box-shadow: 6px 0 0 #333;
+    box-shadow: 7px 0 0 #333;
 }
 
-
-/* Bottom Area */
+/* ============================================================
+   BOTTOM BAR  (fixed height, always visible)
+   ============================================================ */
 .bottom-bar {
-    position: relative;
+    flex-shrink: 0;
+    padding: 12px 16px 16px;
+    background: rgba(0,0,0,0.65);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
     z-index: 10;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
 }
 
 .bet-controls {
     display: flex;
-    justify-content: space-between;
+    gap: 6px;
     margin-bottom: 10px;
 }
 
 .bet-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
     color: #fff;
-    padding: 8px 15px;
-    border-radius: 10px;
+    padding: 7px 4px;
+    border-radius: 8px;
     font-size: 12px;
     cursor: pointer;
-    flex: 1;
-    margin: 0 5px;
 }
-.bet-btn:first-child { margin-right: 0; }
-.bet-btn:last-child { margin-left: 0; }
+.bet-btn:hover { background: rgba(255,255,255,0.18); }
 
 .bet-input-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     gap: 10px;
+    align-items: center;
 }
 
 .play-btn {
     flex: 1;
-    background: linear-gradient(180deg, #5185d9, #1c4b94);
+    background: linear-gradient(180deg, #5a90e8, #1b4da0);
     color: #fff;
     border: none;
-    padding: 15px;
+    padding: 14px;
     border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 17px;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.45);
 }
+.play-btn:active { transform: scale(0.97); }
 
 .bet-input-wrapper {
     flex: 1;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,0.5);
     border-radius: 10px;
-    padding: 10px 15px;
-    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    gap: 6px;
 }
 
-.bet-input-wrapper .currency-input {
-    color: #aaa;
-    margin-left: 10px;
-}
+.bet-input-wrapper .currency-input { color: #888; font-size: 13px; }
 
 #betInput {
     background: transparent;
     border: none;
     color: #fff;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 700;
     width: 100%;
     outline: none;
     text-align: left;
@@ -414,69 +359,59 @@ body {
     flex-direction: column;
     gap: 10px;
 }
-.current-win-text {
-    text-align: center;
-    color: #fff;
-    font-size: 14px;
-}
-.current-win-text span {
-    font-weight: bold;
-}
+.current-win-text { text-align: center; font-size: 14px; }
+.current-win-text span { font-weight: 700; color: #4cef80; }
 
 .cashout-btn {
-    background: linear-gradient(180deg, #5185d9, #1c4b94);
+    width: 100%;
+    background: linear-gradient(180deg, #5a90e8, #1b4da0);
     color: #fff;
     border: none;
-    padding: 15px;
+    padding: 14px;
     border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 17px;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    width: 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.45);
 }
 
 .footer-links {
     display: flex;
     justify-content: space-between;
-    margin-top: 15px;
-    font-size: 12px;
-    color: #aaa;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #888;
 }
 
-.hidden {
-    display: none !important;
-}
+.hidden { display: none !important; }
 
-/* Win Popup */
+/* ============================================================
+   WIN POPUP
+   ============================================================ */
 .win-popup {
     position: absolute;
-    top: 40%;
+    top: 42%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(10, 40, 20, 0.95);
-    border: 2px solid #00ff00;
+    background: rgba(5, 30, 15, 0.96);
+    border: 2px solid #00ff55;
     border-radius: 20px;
-    padding: 20px 40px;
+    padding: 22px 44px;
     text-align: center;
-    z-index: 100;
-    box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
-    animation: popup 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 200;
+    box-shadow: 0 0 32px rgba(0, 255, 80, 0.45);
+    animation: popup 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes popup {
-    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    from { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+    to   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
 }
 
 .win-title {
-    color: #00ff00;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    color: #00ff55;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
 }
-
-.win-amount {
-    font-size: 18px;
-    color: #fff;
-}
+.win-amount { font-size: 18px; color: #fff; }
