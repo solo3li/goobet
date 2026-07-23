@@ -186,12 +186,12 @@ body {
 }
 
 .wood-bg {
-    background: url('assets/wood_circle.png') no-repeat center center / cover;
+    background: url('assets/board.jpg') no-repeat center center / cover;
     box-shadow: 0 3px 8px rgba(0,0,0,0.5);
 }
 
 .covered-bg {
-    background: url('assets/covered_circle.png') no-repeat center center / cover;
+    background: url('assets/ftr.jpg') no-repeat center center / cover;
     box-shadow: 0 3px 8px rgba(0,0,0,0.5);
 }
 
