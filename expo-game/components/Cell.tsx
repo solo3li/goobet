@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Animated, ImageBackground, Image } from 'react-native';
+import { View, StyleSheet, Pressable, Animated, ImageBackground, Image, Platform } from 'react-native';
 
 interface CellProps {
   isRevealed: boolean;
@@ -16,7 +16,7 @@ export function Cell({ isRevealed, isActive, isCore, onPress }: CellProps) {
       Animated.timing(flipAnim, {
         toValue: 180,
         duration: 550,
-        useNativeDriver: true,
+        useNativeDriver: Platform.OS !== 'web',
       }).start();
     } else {
       flipAnim.setValue(0);
@@ -40,20 +40,18 @@ export function Cell({ isRevealed, isActive, isCore, onPress }: CellProps) {
   const backImage = isCore ? require('../assets/cuteapple.jpg') : require('../assets/fullapple.jpg');
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.cell}>
-        <View style={styles.cellInner}>
-          <Animated.View style={[styles.face, frontStyle, styles.shadows, isActive && styles.activeShadows]}>
-            <ImageBackground source={frontImage} style={styles.bgImage} imageStyle={styles.bgImageStyle}>
-            </ImageBackground>
-          </Animated.View>
+    <Pressable onPress={onPress} style={styles.cell}>
+      <View style={styles.cellInner}>
+        <Animated.View style={[styles.face, frontStyle, styles.shadows, isActive && styles.activeShadows]}>
+          <ImageBackground source={frontImage} style={styles.bgImage} imageStyle={styles.bgImageStyle}>
+          </ImageBackground>
+        </Animated.View>
 
-          <Animated.View style={[styles.face, backStyle, styles.backFace]}>
-            <Image source={backImage} style={styles.icon} />
-          </Animated.View>
-        </View>
+        <Animated.View style={[styles.face, backStyle, styles.backFace]}>
+          <Image source={backImage} resizeMode="cover" style={styles.icon} />
+        </Animated.View>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 }
 
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backfaceVisibility: 'hidden',
     position: 'absolute',
-    borderRadius: 50, // To make them circles
+    borderRadius: 50,
   },
   bgImage: {
     width: '100%',
@@ -87,34 +85,24 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   shadows: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
+    boxShadow: '0px 3px 8px rgba(0,0,0,0.5)',
     elevation: 4,
   },
   activeShadows: {
-    shadowColor: '#00ff55',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 12,
+    boxShadow: '0px 0px 12px #00ff55',
     borderWidth: 2,
     borderColor: '#00ff55',
     elevation: 8,
   },
   backFace: {
-    backgroundColor: '#3e1f10', // Simplified radial gradient fallback
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 10,
+    backgroundColor: '#3e1f10',
+    boxShadow: 'inset 0px 0px 10px #000',
     justifyContent: 'center',
     alignItems: 'center',
   },
   icon: {
     width: '85%',
     height: '85%',
-    resizeMode: 'cover',
     borderRadius: 50,
   }
 });
