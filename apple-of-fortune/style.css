@@ -114,16 +114,18 @@ body {
     z-index: 10;
     display: flex;
     flex: 1;
+    justify-content: center;
     padding: 0 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    min-height: 0; /* allows flex item to shrink */
 }
 
 .multipliers {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding-right: 15px;
-    width: 70px;
+    padding-right: 10px;
+    width: 60px;
     height: 100%;
 }
 
@@ -133,7 +135,7 @@ body {
     font-weight: bold;
     text-align: right;
     transition: all 0.3s;
-    height: 10%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -152,18 +154,17 @@ body {
 .grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: min-content;
-    gap: 10px;
-    flex: 1;
-    align-content: end;
-    width: 100%;
-    margin-bottom: 20px;
+    grid-template-rows: repeat(10, 1fr);
+    gap: 2%; /* proportional gap */
+    height: 100%;
+    aspect-ratio: 0.5; /* 5 cols / 10 rows */
+    margin: 0 auto;
 }
 
 .cell {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%; /* fill the grid row */
     display: flex;
     justify-content: center;
     align-items: center;
