@@ -219,17 +219,19 @@ body {
 .apple {
     width: 85%;
     height: 85%;
-    background: url('assets/apple_0.png') no-repeat center center;
-    background-size: contain;
+    background: url('assets/fullapple.jpg') no-repeat center center;
+    background-size: cover;
     position: relative;
+    border-radius: 50%;
 }
 
 .core {
     width: 85%;
     height: 85%;
-    background: url('assets/apple_1.png') no-repeat center center;
-    background-size: contain;
+    background: url('assets/cuteapple.jpg') no-repeat center center;
+    background-size: cover;
     position: relative;
+    border-radius: 50%;
 }
 
 /* ============================================================
