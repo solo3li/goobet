@@ -36,8 +36,8 @@ export function Cell({ isRevealed, isActive, isCore, onPress }: CellProps) {
   const frontStyle = { transform: [{ rotateY: frontInterpolate }, { perspective: 600 }] };
   const backStyle = { transform: [{ rotateY: backInterpolate }, { perspective: 600 }], position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 } as const;
 
-  const frontImage = isActive ? require('../assets/ftr.jpg') : require('../assets/board.jpg');
-  const backImage = isCore ? require('../assets/cuteapple.jpg') : require('../assets/fullapple.jpg');
+  const frontImage = isActive ? require('../assets/ftr_opt.jpg') : require('../assets/board_opt.jpg');
+  const backImage = isCore ? require('../assets/cuteapple_opt.jpg') : require('../assets/fullapple_opt.jpg');
 
   return (
     <Pressable onPress={onPress} style={styles.cell}>

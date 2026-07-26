@@ -30,7 +30,7 @@ export default function App() {
   return (
     <View style={styles.root}>
       <View style={[styles.gameContainer, { width: Platform.OS === 'web' ? idealWidth : '100%' }]}>
-        <ImageBackground source={require('./assets/background.png')} style={styles.background} resizeMode="cover">
+        <ImageBackground source={require('./assets/background.jpg')} style={styles.background} resizeMode="cover">
           <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" />
             <Header balance={balance} />
