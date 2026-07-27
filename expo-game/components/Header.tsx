@@ -9,18 +9,18 @@ export function Header({ balance }: Props) {
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.iconBtn}>
-        <Text style={styles.iconText}>?</Text>
+        <Text style={styles.iconText}>i</Text>
       </TouchableOpacity>
 
       <View style={styles.balanceContainer}>
-        <Text style={styles.balanceText}>{balance.toFixed(2)} <Text style={styles.currency}>EGP</Text></Text>
         <TouchableOpacity style={styles.addBtn}>
           <Text style={styles.addBtnText}>+</Text>
         </TouchableOpacity>
+        <Text style={styles.balanceText}>{balance.toFixed(0)} <Text style={styles.currency}>ج.م</Text></Text>
       </View>
 
       <TouchableOpacity style={styles.iconBtn}>
-        <Text style={styles.iconText}>X</Text>
+        <Text style={styles.iconText}>→</Text>
       </TouchableOpacity>
     </View>
   );
@@ -66,17 +66,17 @@ const styles = StyleSheet.create({
   },
   currency: {
     color: '#aaa',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 'normal',
   },
   addBtn: {
-    backgroundColor: '#4caf50',
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    backgroundColor: '#00a3ff', // matches screenshot blue color for +
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 6,
+    marginRight: 6,
   },
   addBtnText: {
     color: '#fff',

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
 import { Cell } from './Cell';
 
 interface Props {
@@ -11,6 +11,23 @@ interface Props {
 }
 
 export function GameGrid({ gameState, activeRow, gridData, revealedCells, onCellClick }: Props) {
+  const [rowHeight, setRowHeight] = useState(0);
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  // The gap between rows
+  const GAP = 4;
+
+  useEffect(() => {
+    // When activeRow changes, slide the grid down.
+    // We only slide down if we're in PLAYING state and advancing, or reset if activeRow is 0.
+    const slideAmount = activeRow * (rowHeight + GAP);
+    Animated.timing(translateY, {
+      toValue: slideAmount,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
+  }, [activeRow, rowHeight, translateY]);
+
   const rows = [];
   for (let r = 9; r >= 0; r--) {
     const cols = [];
@@ -30,21 +47,40 @@ export function GameGrid({ gameState, activeRow, gridData, revealedCells, onCell
       );
     }
     rows.push(
-      <View key={r} style={styles.row}>
+      <View 
+        key={r} 
+        style={styles.row}
+        onLayout={(e) => {
+          if (r === 0 && rowHeight === 0) {
+            setRowHeight(e.nativeEvent.layout.height);
+          }
+        }}
+      >
         {cols}
       </View>
     );
   }
 
-  return <View style={styles.grid}>{rows}</View>;
+  return (
+    <View style={styles.gridContainer}>
+      <Animated.View style={[styles.grid, { transform: [{ translateY }] }]}>
+        {rows}
+      </Animated.View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  gridContainer: {
+    flex: 1,
+    overflow: 'hidden',
+    paddingBottom: 20, // To lift the bottom row slightly as requested
+  },
   grid: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    gap: 4, // RN supports gap
+    gap: 4, 
   },
   row: {
     flex: 1,
