@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface Props {
   balance: number;
+  onBack?: () => void;
 }
 
-export function Header({ balance }: Props) {
+export function Header({ balance, onBack }: Props) {
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.iconBtn}>
@@ -19,7 +20,7 @@ export function Header({ balance }: Props) {
         <Text style={styles.balanceText}>{balance.toFixed(0)} <Text style={styles.currency}>ج.م</Text></Text>
       </View>
 
-      <TouchableOpacity style={styles.iconBtn}>
+      <TouchableOpacity style={styles.iconBtn} onPress={onBack}>
         <Text style={styles.iconText}>→</Text>
       </TouchableOpacity>
     </View>
