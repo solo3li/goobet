@@ -91,7 +91,7 @@ export function HomeScreen({ onPlayApple }: Props) {
               <View style={styles.gameCard}><Image source={require('../assets/kamikaze.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Kamikaze</Text></View>
               <View style={styles.gameCard}><Image source={require('../assets/wild_west_gold.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Wild West Gold</Text></View>
               <TouchableOpacity style={styles.gameCard} onPress={onPlayApple}>
-                <Image source={require('../assets/card_apple.png')} style={styles.gameImg} />
+                <Image source={require('../assets/card_apple_cropped.png')} style={styles.gameImg} />
                 <Text style={styles.gameTitle}>Apple Of Fortune</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -122,7 +122,9 @@ export function HomeScreen({ onPlayApple }: Props) {
               <Text style={styles.navText}>التاريخ</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.navItem}>
-              <Image source={require('../assets/coupon_icon.png')} style={styles.couponImage} />
+              <View style={styles.couponCircle}>
+                <MaterialCommunityIcons name="ticket-percent" size={28} color="#fff" style={{ transform: [{ rotate: '-30deg' }] }} />
+              </View>
               <Text style={styles.navTextActive}>القسيمة</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.navItem}>
