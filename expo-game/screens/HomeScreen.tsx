@@ -65,7 +65,7 @@ export function HomeScreen({ onPlayApple }: Props) {
             <Text style={styles.sectionTitle}>فئة السلم</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
               <TouchableOpacity style={styles.gameCard} onPress={onPlayApple}>
-                <Image source={require('../assets/cuteapple_opt.jpg')} style={styles.gameImg} />
+                <Image source={require('../assets/card_apple.png')} style={styles.gameImg} />
                 <Text style={styles.gameTitle}>Apple of Fortune</Text>
               </TouchableOpacity>
               
