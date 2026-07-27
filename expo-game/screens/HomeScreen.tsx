@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, SafeAreaView, Platform, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, SafeAreaView, Platform, useWindowDimensions, StatusBar } from 'react-native';
 
 interface Props {
   onPlayApple: () => void;
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   header: {
     flexDirection: 'row',
@@ -287,6 +288,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: '#fff',
     paddingVertical: 10,
+    paddingBottom: Platform.OS === 'android' ? 24 : 10,
     borderTopWidth: 1,
     borderTopColor: '#eee',
     position: 'absolute',

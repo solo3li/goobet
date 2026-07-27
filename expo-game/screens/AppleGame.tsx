@@ -86,6 +86,8 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingBottom: Platform.OS === 'android' ? 24 : 0,
   },
   title: {
     textAlign: 'center',
