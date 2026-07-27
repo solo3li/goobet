@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, SafeAreaView, Platform, useWindowDimensions, StatusBar } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
 
@@ -7,6 +7,7 @@ interface Props {
 }
 
 export function HomeScreen({ onPlayApple }: Props) {
+  const [activeTab, setActiveTab] = useState('أعلى');
   const { height } = useWindowDimensions();
   const idealWidth = Math.min(450, height * (394 / 854));
 
@@ -36,80 +37,202 @@ export function HomeScreen({ onPlayApple }: Props) {
           {/* Top Tabs */}
           <View style={styles.topTabs}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabsContent} inverted>
-              <View style={styles.tabItem}>
-                <Ionicons name="star" size={20} color="#b0b5bd" />
-                <Text style={styles.tabText}>أعلى</Text>
-              </View>
-              <View style={styles.tabItem}>
+              <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('أعلى')}>
+                <Ionicons name="star" size={20} color={activeTab === 'أعلى' ? "#17a2b8" : "#b0b5bd"} />
+                <Text style={activeTab === 'أعلى' ? styles.activeTabText : styles.tabText}>أعلى</Text>
+                {activeTab === 'أعلى' && <View style={styles.activeTabIndicator} />}
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tabItem}>
                 <Ionicons name="football" size={20} color="#b0b5bd" />
                 <Text style={styles.tabText}>الرياضة</Text>
-              </View>
-              <View style={styles.tabItem}>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tabItem}>
                 <Ionicons name="game-controller" size={20} color="#b0b5bd" />
                 <Text style={styles.tabText}>Esports</Text>
-              </View>
-              <View style={styles.tabItem}>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tabItem}>
                 <MaterialCommunityIcons name="cards-playing" size={20} color="#b0b5bd" />
                 <Text style={styles.tabText}>الكازينو</Text>
-              </View>
-              <View style={[styles.tabItem, styles.activeTab]}>
-                <FontAwesome5 name="dice" size={20} color="#17a2b8" />
-                <Text style={styles.activeTabText}>Games</Text>
-                <View style={styles.activeTabIndicator} />
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Games')}>
+                <FontAwesome5 name="dice" size={20} color={activeTab === 'Games' ? "#17a2b8" : "#b0b5bd"} />
+                <Text style={activeTab === 'Games' ? styles.activeTabText : styles.tabText}>Games</Text>
+                {activeTab === 'Games' && <View style={styles.activeTabIndicator} />}
+              </TouchableOpacity>
             </ScrollView>
           </View>
 
           {/* Main Content Area */}
-          <ScrollView style={styles.mainContent} contentContainerStyle={{ paddingBottom: 100 }}>
-            
-            <View style={styles.sectionHeader}>
-              <TouchableOpacity style={styles.allBtn}>
-                <Text style={styles.allBtnText}>الكل</Text>
-              </TouchableOpacity>
-              <Text style={styles.sectionTitle}>سلوتات</Text>
-            </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
-              <View style={styles.gameCard}><Image source={require('../assets/vampire_curse.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Vampire Curse</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/burning_hot.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Burning Hot</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/crystal.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Crystal</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/western_slot.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Western slot</Text></View>
+          {activeTab === 'Games' && (
+            <ScrollView style={styles.mainContent} contentContainerStyle={{ paddingBottom: 100 }}>
+              
+              <View style={styles.sectionHeader}>
+                <TouchableOpacity style={styles.allBtn}>
+                  <Text style={styles.allBtnText}>الكل</Text>
+                </TouchableOpacity>
+                <Text style={styles.sectionTitle}>سلوتات</Text>
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
+                <View style={styles.gameCard}><Image source={require('../assets/vampire_curse.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Vampire Curse</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/burning_hot.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Burning Hot</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/crystal.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Crystal</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/western_slot.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Western slot</Text></View>
+              </ScrollView>
+
+              <View style={styles.bannerContainer}>
+                <Image source={require('../assets/lucky_wheel.png')} style={styles.bannerImg} resizeMode="cover" />
+              </View>
+
+              <View style={styles.sectionHeader}>
+                <TouchableOpacity style={styles.allBtn}>
+                  <Text style={styles.allBtnText}>الكل</Text>
+                </TouchableOpacity>
+                <Text style={styles.sectionTitle}>ألعاب فئة السلم</Text>
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
+                <View style={styles.gameCard}><Image source={require('../assets/dragons_gold.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Dragon's Gold</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/kamikaze.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Kamikaze</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/wild_west_gold.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Wild West Gold</Text></View>
+                <TouchableOpacity style={styles.gameCard} onPress={onPlayApple}>
+                  <Image source={require('../assets/card_apple_cropped.png')} style={styles.gameImg} />
+                  <Text style={styles.gameTitle}>Apple Of Fortune</Text>
+                </TouchableOpacity>
+              </ScrollView>
+
+              <View style={styles.sectionHeader}>
+                <TouchableOpacity style={styles.allBtn}>
+                  <Text style={styles.allBtnText}>الكل</Text>
+                </TouchableOpacity>
+                <Text style={styles.sectionTitle}>النرد</Text>
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
+                <View style={styles.gameCard}><Image source={require('../assets/games_mania.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Games Mania</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/yahtzee.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Yahtzee</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/dice.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Dice</Text></View>
+                <View style={styles.gameCard}><Image source={require('../assets/under_over_7.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Under and Over 7</Text></View>
+              </ScrollView>
             </ScrollView>
+          )}
 
-            <View style={styles.bannerContainer}>
-              <Image source={require('../assets/lucky_wheel.png')} style={styles.bannerImg} resizeMode="cover" />
-            </View>
+          {activeTab === 'أعلى' && (
+            <ScrollView style={styles.mainContent} contentContainerStyle={{ paddingBottom: 100 }}>
+              
+              {/* Sports Categories Top Horizontal */}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.sportsScroll}>
+                <View style={styles.sportCat}>
+                  <View style={styles.sportIconCircleActive}><Ionicons name="checkmark-done" size={24} color="#fff" /></View>
+                  <Text style={styles.sportTextActive}>الكل</Text>
+                </View>
+                <View style={styles.sportCat}>
+                  <View style={styles.sportIconCircle}><Ionicons name="football" size={24} color="#17a2b8" /></View>
+                  <Text style={styles.sportText}>كرة القدم</Text>
+                </View>
+                <View style={styles.sportCat}>
+                  <View style={styles.sportIconCircle}><MaterialCommunityIcons name="tennis-ball" size={24} color="#17a2b8" /></View>
+                  <Text style={styles.sportText}>التنس</Text>
+                </View>
+                <View style={styles.sportCat}>
+                  <View style={styles.sportIconCircle}><MaterialCommunityIcons name="basketball" size={24} color="#17a2b8" /></View>
+                  <Text style={styles.sportText}>كرة السلة</Text>
+                </View>
+                <View style={styles.sportCat}>
+                  <View style={styles.sportIconCircle}><MaterialCommunityIcons name="hockey-sticks" size={24} color="#17a2b8" /></View>
+                  <Text style={styles.sportText}>هوكي الجليد</Text>
+                </View>
+                <View style={styles.sportCat}>
+                  <View style={styles.sportIconCircle}><MaterialCommunityIcons name="volleyball" size={24} color="#17a2b8" /></View>
+                  <Text style={styles.sportText}>الكرة الطائرة</Text>
+                </View>
+              </ScrollView>
 
-            <View style={styles.sectionHeader}>
-              <TouchableOpacity style={styles.allBtn}>
-                <Text style={styles.allBtnText}>الكل</Text>
-              </TouchableOpacity>
-              <Text style={styles.sectionTitle}>ألعاب فئة السلم</Text>
-            </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
-              <View style={styles.gameCard}><Image source={require('../assets/dragons_gold.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Dragon's Gold</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/kamikaze.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Kamikaze</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/wild_west_gold.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Wild West Gold</Text></View>
-              <TouchableOpacity style={styles.gameCard} onPress={onPlayApple}>
-                <Image source={require('../assets/card_apple_cropped.png')} style={styles.gameImg} />
-                <Text style={styles.gameTitle}>Apple Of Fortune</Text>
-              </TouchableOpacity>
+              {/* Promo Banners */}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.bannersScroll}>
+                <Image source={require('../assets/banner1.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/banner2.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/banner3.png')} style={styles.promoBanner} />
+              </ScrollView>
+
+              <View style={styles.sectionHeader}>
+                <TouchableOpacity style={styles.allBtn}>
+                  <Text style={styles.allBtnText}>الكل</Text>
+                </TouchableOpacity>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={styles.pillLabel}><Text style={styles.pillLabelText}>الرياضة</Text></View>
+                  <Text style={styles.sectionTitle}>أفضل ما هو مباشر</Text>
+                </View>
+              </View>
+
+              <View style={styles.matchCard}>
+                <View style={styles.matchCardHeader}>
+                  <Ionicons name="football" size={16} color="#b0b5bd" />
+                  <Text style={styles.matchLeagueText}>استراليا دوري فيكتوريا الممتاز 1 تحت 23 سنة</Text>
+                </View>
+                <View style={styles.matchTeamsRow}>
+                  <View style={styles.teamView}>
+                    <Text style={styles.teamName}>لانغوارين تحت 23 سنة</Text>
+                  </View>
+                  <View style={styles.scoreView}>
+                    <Text style={styles.scoreText}>0 : 1</Text>
+                  </View>
+                  <View style={styles.teamView}>
+                    <Text style={styles.teamName}>بوللين ليونز تحت 23 سنة</Text>
+                  </View>
+                </View>
+                <Text style={styles.matchTimeText}>نصف الوقت, 45:00 (0-0, 1-0)</Text>
+                
+                <View style={styles.oddsContainer}>
+                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز2</Text><Text style={styles.oddValue}>13.2</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddLabel}>التعادل</Text><Text style={styles.oddValue}>7.3</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز1</Text><Text style={styles.oddValue}>1.15</Text></View>
+                </View>
+              </View>
+
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>قبل المباراة الأكثر شعبية</Text>
+              </View>
+
+              <View style={styles.matchCard}>
+                <View style={styles.matchCardHeader}>
+                  <Ionicons name="football" size={16} color="#b0b5bd" />
+                  <Text style={styles.matchLeagueText}>بطولة التشيك</Text>
+                </View>
+                <View style={styles.matchTeamsRow}>
+                  <View style={styles.teamView}>
+                    <Text style={styles.teamName}>أرتيس برنو</Text>
+                  </View>
+                  <View style={styles.scoreView}>
+                    <Text style={styles.scoreText}>VS</Text>
+                  </View>
+                  <View style={styles.teamView}>
+                    <Text style={styles.teamName}>نادي كرة القدم ملادا بوليسلاف</Text>
+                  </View>
+                </View>
+                <Text style={styles.matchTimeText}>27.07.2026 (07:00 PM)</Text>
+                
+                <View style={styles.oddsContainer}>
+                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز2</Text><Text style={styles.oddValue}>3.815</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddLabel}>التعادل</Text><Text style={styles.oddValue}>3.62</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز1</Text><Text style={styles.oddValue}>1.87</Text></View>
+                </View>
+              </View>
+
+              <View style={styles.sectionHeader}>
+                <TouchableOpacity style={styles.allBtn}>
+                  <Text style={styles.allBtnText}>الكل</Text>
+                </TouchableOpacity>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={[styles.pillLabel, {borderColor: '#e83e8c'}]}><Text style={[styles.pillLabelText, {color: '#e83e8c'}]}>كازينو</Text></View>
+                  <Text style={styles.sectionTitle}>موصى به</Text>
+                </View>
+              </View>
+              
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
+                <View style={[styles.gameCard, {width: 140}]}><Image source={require('../assets/casino_royalty.png')} style={[styles.gameImg, {width: 140}]} /><Text style={styles.gameTitle}>Royalty of Olympus</Text></View>
+                <View style={[styles.gameCard, {width: 140}]}><Image source={require('../assets/casino_hit_coins.png')} style={[styles.gameImg, {width: 140}]} /><Text style={styles.gameTitle}>Hit Coins 2 Hold and S...</Text></View>
+              </ScrollView>
+              
             </ScrollView>
-
-            <View style={styles.sectionHeader}>
-              <TouchableOpacity style={styles.allBtn}>
-                <Text style={styles.allBtnText}>الكل</Text>
-              </TouchableOpacity>
-              <Text style={styles.sectionTitle}>النرد</Text>
-            </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} inverted style={styles.horizontalScroll}>
-              <View style={styles.gameCard}><Image source={require('../assets/games_mania.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Games Mania</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/yahtzee.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Yahtzee</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/dice.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Dice</Text></View>
-              <View style={styles.gameCard}><Image source={require('../assets/under_over_7.png')} style={styles.gameImg} /><Text style={styles.gameTitle}>Under and Over 7</Text></View>
-            </ScrollView>
-
-          </ScrollView>
+          )}
 
           {/* Bottom Navigation */}
           <View style={styles.bottomNav}>
@@ -361,5 +484,142 @@ const styles = StyleSheet.create({
     color: '#17a2b8',
     marginTop: 4,
     fontWeight: 'bold',
+  },
+  sportsScroll: {
+    paddingHorizontal: 16,
+    paddingVertical: 15,
+  },
+  sportCat: {
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  sportIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  sportIconCircleActive: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#17a2b8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+    shadowColor: '#17a2b8',
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  sportText: {
+    fontSize: 12,
+    color: '#333',
+  },
+  sportTextActive: {
+    fontSize: 12,
+    color: '#333',
+    fontWeight: 'bold',
+  },
+  bannersScroll: {
+    paddingHorizontal: 16,
+  },
+  promoBanner: {
+    width: 140,
+    height: 140,
+    borderRadius: 16,
+    marginHorizontal: 5,
+  },
+  pillLabel: {
+    borderWidth: 1,
+    borderColor: '#17a2b8',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    marginRight: 8,
+  },
+  pillLabelText: {
+    color: '#17a2b8',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  matchCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    marginHorizontal: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  matchCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  matchLeagueText: {
+    color: '#6b7280',
+    fontSize: 12,
+    marginLeft: 6,
+  },
+  matchTeamsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  teamView: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  teamName: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#1f2937',
+    fontSize: 14,
+  },
+  scoreView: {
+    width: 60,
+    alignItems: 'center',
+  },
+  scoreText: {
+    fontWeight: '900',
+    fontSize: 18,
+    color: '#1f2937',
+  },
+  matchTimeText: {
+    textAlign: 'center',
+    color: '#6b7280',
+    fontSize: 11,
+    marginBottom: 16,
+  },
+  oddsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  oddBox: {
+    flex: 1,
+    backgroundColor: '#f2f4f7',
+    borderRadius: 8,
+    padding: 10,
+    marginHorizontal: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  oddLabel: {
+    color: '#6b7280',
+    fontSize: 12,
+  },
+  oddValue: {
+    fontWeight: 'bold',
+    color: '#1f2937',
+    fontSize: 14,
   }
 });
