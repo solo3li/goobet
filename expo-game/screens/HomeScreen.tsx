@@ -122,9 +122,7 @@ export function HomeScreen({ onPlayApple }: Props) {
               <Text style={styles.navText}>التاريخ</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.navItem}>
-              <View style={styles.couponCircle}>
-                <MaterialCommunityIcons name="ticket-percent" size={28} color="#fff" />
-              </View>
+              <Image source={require('../assets/coupon_icon.png')} style={styles.couponImage} />
               <Text style={styles.navTextActive}>القسيمة</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.navItem}>
@@ -331,6 +329,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flex: 1,
     height: 50,
+  },
+  couponImage: {
+    width: 60,
+    height: 60,
+    position: 'absolute',
+    top: -25,
   },
   couponCircle: {
     width: 50,
