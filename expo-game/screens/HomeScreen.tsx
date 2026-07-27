@@ -164,55 +164,68 @@ export function HomeScreen({ onPlayApple }: Props) {
 
               <View style={styles.matchCard}>
                 <View style={styles.matchCardHeader}>
-                  <Ionicons name="football" size={16} color="#b0b5bd" />
+                  <Ionicons name="football-outline" size={16} color="#6b7280" />
                   <Text style={styles.matchLeagueText}>استراليا دوري فيكتوريا الممتاز 1 تحت 23 سنة</Text>
                 </View>
+                
                 <View style={styles.matchTeamsRow}>
-                  <View style={styles.teamView}>
-                    <Text style={styles.teamName}>لانغوارين تحت 23 سنة</Text>
+                  <View style={styles.teamViewLeft}>
+                    <Ionicons name="person-circle-outline" size={28} color="#b0b5bd" />
+                    <Text style={styles.teamNameLeft}>لانغوارين تحت 23 سنة</Text>
                   </View>
                   <View style={styles.scoreView}>
-                    <Text style={styles.scoreText}>0 : 1</Text>
+                    <Text style={styles.scoreText}>1 : 0</Text>
                   </View>
-                  <View style={styles.teamView}>
-                    <Text style={styles.teamName}>بوللين ليونز تحت 23 سنة</Text>
+                  <View style={styles.teamViewRight}>
+                    <Text style={styles.teamNameRight}>بوللين ليونز تحت 23 سنة</Text>
+                    <Ionicons name="person-circle-outline" size={28} color="#b0b5bd" />
                   </View>
                 </View>
+                
                 <Text style={styles.matchTimeText}>نصف الوقت, 45:00 (0-0, 1-0)</Text>
                 
+                <Text style={styles.oneXTwo}>1x2</Text>
                 <View style={styles.oddsContainer}>
-                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز2</Text><Text style={styles.oddValue}>13.2</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddLabel}>التعادل</Text><Text style={styles.oddValue}>7.3</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز1</Text><Text style={styles.oddValue}>1.15</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>13.2</Text><Text style={styles.oddLabel}>فوز2</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>7.3</Text><Text style={styles.oddLabel}>التعادل</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>1.15</Text><Text style={styles.oddLabel}>فوز1</Text></View>
                 </View>
               </View>
 
               <View style={styles.sectionHeader}>
+                <TouchableOpacity style={styles.allBtn}>
+                  <Text style={styles.allBtnText}>الكل</Text>
+                </TouchableOpacity>
                 <Text style={styles.sectionTitle}>قبل المباراة الأكثر شعبية</Text>
               </View>
 
               <View style={styles.matchCard}>
                 <View style={styles.matchCardHeader}>
-                  <Ionicons name="football" size={16} color="#b0b5bd" />
+                  <Ionicons name="football-outline" size={16} color="#6b7280" />
                   <Text style={styles.matchLeagueText}>بطولة التشيك</Text>
                 </View>
+                
                 <View style={styles.matchTeamsRow}>
-                  <View style={styles.teamView}>
-                    <Text style={styles.teamName}>أرتيس برنو</Text>
+                  <View style={styles.teamViewLeft}>
+                    <Image source={require('../assets/logo_brno.png')} style={styles.teamLogo} />
+                    <Text style={styles.teamNameLeft}>أرتيس برنو</Text>
                   </View>
                   <View style={styles.scoreView}>
                     <Text style={styles.scoreText}>VS</Text>
                   </View>
-                  <View style={styles.teamView}>
-                    <Text style={styles.teamName}>نادي كرة القدم ملادا بوليسلاف</Text>
+                  <View style={styles.teamViewRight}>
+                    <Text style={styles.teamNameRight}>نادي كرة القدم ملادا بوليسلاف</Text>
+                    <Image source={require('../assets/logo_mlada.png')} style={styles.teamLogo} />
                   </View>
                 </View>
+                
                 <Text style={styles.matchTimeText}>27.07.2026 (07:00 PM)</Text>
                 
+                <Text style={styles.oneXTwo}>1x2</Text>
                 <View style={styles.oddsContainer}>
-                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز2</Text><Text style={styles.oddValue}>3.815</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddLabel}>التعادل</Text><Text style={styles.oddValue}>3.62</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddLabel}>فوز1</Text><Text style={styles.oddValue}>1.87</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>3.815</Text><Text style={styles.oddLabel}>فوز2</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>3.62</Text><Text style={styles.oddLabel}>التعادل</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>1.87</Text><Text style={styles.oddLabel}>فوز1</Text></View>
                 </View>
               </View>
 
@@ -530,10 +543,11 @@ const styles = StyleSheet.create({
   },
   bannersScroll: {
     paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   promoBanner: {
-    width: 140,
-    height: 140,
+    width: 150,
+    height: 152,
     borderRadius: 16,
     marginHorizontal: 5,
   },
@@ -574,15 +588,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  teamView: {
+  teamViewLeft: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
-  teamName: {
-    textAlign: 'center',
+  teamViewRight: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  teamNameLeft: {
+    textAlign: 'left',
     fontWeight: 'bold',
     color: '#1f2937',
-    fontSize: 14,
+    fontSize: 13,
+    marginLeft: 6,
+    flex: 1,
+  },
+  teamNameRight: {
+    textAlign: 'right',
+    fontWeight: 'bold',
+    color: '#1f2937',
+    fontSize: 13,
+    marginRight: 6,
+    flex: 1,
+  },
+  teamLogo: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#eee',
   },
   scoreView: {
     width: 60,
@@ -597,7 +635,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#6b7280',
     fontSize: 11,
-    marginBottom: 16,
+    marginBottom: 8,
+  },
+  oneXTwo: {
+    textAlign: 'right',
+    fontSize: 10,
+    color: '#b0b5bd',
+    marginBottom: 4,
+    marginRight: 4,
   },
   oddsContainer: {
     flexDirection: 'row',
@@ -607,14 +652,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f4f7',
     borderRadius: 8,
-    padding: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 10,
     marginHorizontal: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   oddLabel: {
-    color: '#6b7280',
+    color: '#b0b5bd',
     fontSize: 12,
   },
   oddValue: {
