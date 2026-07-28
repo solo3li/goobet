@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   activeText: {
     color: '#00ff55',
-    textShadow: '0px 0px 6px #00ff55',
+    textShadowColor: '#00ff55', textShadowRadius: 6, textShadowOffset: {width: 0, height: 0},
   },
   passedText: {
     color: '#3dba5f',
