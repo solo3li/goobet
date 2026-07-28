@@ -163,32 +163,36 @@ export function HomeScreen({ onPlayApple }: Props) {
               </View>
 
               <View style={styles.matchCard}>
-                <View style={styles.matchCardHeader}>
-                  <Ionicons name="football-outline" size={16} color="#6b7280" />
-                  <Text style={styles.matchLeagueText}>استراليا دوري فيكتوريا الممتاز 1 تحت 23 سنة</Text>
+                <View style={styles.matchCardHeaderTop}>
+                  <View style={styles.headerTopLeft}><Ionicons name="star-outline" size={16} color="#b0b5bd" /></View>
+                  <View style={styles.headerTopCenter}>
+                    <Ionicons name="trophy-outline" size={14} color="#6b7280" />
+                    <Text style={styles.matchLeagueText}>ASEAN Cup</Text>
+                  </View>
+                  <View style={styles.headerTopRight}><Ionicons name="notifications-outline" size={16} color="#17a2b8" /></View>
                 </View>
+                <View style={styles.divider} />
                 
                 <View style={styles.matchTeamsRow}>
                   <View style={styles.teamViewLeft}>
-                    <Ionicons name="person-circle-outline" size={28} color="#b0b5bd" />
-                    <Text style={styles.teamNameLeft}>لانغوارين تحت 23 سنة</Text>
+                    <Image source={require('../assets/flag_indonesia.png')} style={styles.teamLogo} />
+                    <Text style={styles.teamNameLeft} numberOfLines={2}>إندونيسيا</Text>
                   </View>
                   <View style={styles.scoreView}>
-                    <Text style={styles.scoreText}>1 : 0</Text>
+                    <Text style={styles.scoreText}>4 : 1</Text>
                   </View>
                   <View style={styles.teamViewRight}>
-                    <Text style={styles.teamNameRight}>بوللين ليونز تحت 23 سنة</Text>
-                    <Ionicons name="person-circle-outline" size={28} color="#b0b5bd" />
+                    <Text style={styles.teamNameRight} numberOfLines={2}>كمبوديا</Text>
+                    <Image source={require('../assets/flag_cambodia.png')} style={styles.teamLogo} />
                   </View>
                 </View>
                 
-                <Text style={styles.matchTimeText}>نصف الوقت, 45:00 (0-0, 1-0)</Text>
+                <Text style={styles.matchTimeText}>الشوط ال2, الوقت المنقضي: 68:02 (1-1, 3-0)</Text>
                 
-                <Text style={styles.oneXTwo}>1x2</Text>
+                <Text style={styles.oneXTwo}>مجموع</Text>
                 <View style={styles.oddsContainer}>
-                  <View style={styles.oddBox}><Text style={styles.oddValue}>13.2</Text><Text style={styles.oddLabel}>فوز2</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddValue}>7.3</Text><Text style={styles.oddLabel}>التعادل</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddValue}>1.15</Text><Text style={styles.oddLabel}>فوز1</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>1.7</Text><Text style={styles.oddLabel}>أكثر من (6)</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>2.152</Text><Text style={styles.oddLabel}>أقل من (6)</Text></View>
                 </View>
               </View>
 
@@ -196,26 +200,38 @@ export function HomeScreen({ onPlayApple }: Props) {
                 <TouchableOpacity style={styles.allBtn}>
                   <Text style={styles.allBtnText}>الكل</Text>
                 </TouchableOpacity>
-                <Text style={styles.sectionTitle}>قبل المباراة الأكثر شعبية</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={styles.pillLabel}><Text style={styles.pillLabelText}>الرياضة</Text></View>
+                  <Text style={styles.sectionTitle}>قبل المباراة الأكثر شعبية</Text>
+                </View>
               </View>
 
               <View style={styles.matchCard}>
-                <View style={styles.matchCardHeader}>
-                  <Ionicons name="football-outline" size={16} color="#6b7280" />
-                  <Text style={styles.matchLeagueText}>بطولة التشيك</Text>
+                <View style={styles.matchCardHeaderTop}>
+                  <View style={styles.headerTopLeft}><Ionicons name="star-outline" size={16} color="#b0b5bd" /></View>
+                  <View style={styles.headerTopCenter}>
+                    <Ionicons name="trophy-outline" size={14} color="#6b7280" />
+                    <Text style={styles.matchLeagueText}>بطولة التشيك</Text>
+                  </View>
+                  <View style={styles.headerTopRight}>
+                    <View style={styles.soonBadge}><Text style={styles.soonText}>Soon</Text></View>
+                    <Ionicons name="notifications-outline" size={16} color="#17a2b8" />
+                  </View>
                 </View>
+                <View style={styles.divider} />
                 
                 <View style={styles.matchTeamsRow}>
                   <View style={styles.teamViewLeft}>
-                    <Image source={require('../assets/logo_brno.png')} style={styles.teamLogo} />
-                    <Text style={styles.teamNameLeft}>أرتيس برنو</Text>
+                    <Image source={require('../assets/logo_mlada.png')} style={styles.teamLogo} />
+                    <Text style={styles.teamNameLeft} numberOfLines={2}>نادي كرة القدم ملادا بوليسلاف</Text>
                   </View>
                   <View style={styles.scoreView}>
-                    <Text style={styles.scoreText}>VS</Text>
+                    <Text style={styles.timerText}>01 : 01 : 5</Text>
+                    <Text style={styles.vsText}>VS</Text>
                   </View>
                   <View style={styles.teamViewRight}>
-                    <Text style={styles.teamNameRight}>نادي كرة القدم ملادا بوليسلاف</Text>
-                    <Image source={require('../assets/logo_mlada.png')} style={styles.teamLogo} />
+                    <Text style={styles.teamNameRight} numberOfLines={2}>أرتيس برنو</Text>
+                    <Image source={require('../assets/logo_brno.png')} style={styles.teamLogo} />
                   </View>
                 </View>
                 
@@ -223,9 +239,9 @@ export function HomeScreen({ onPlayApple }: Props) {
                 
                 <Text style={styles.oneXTwo}>1x2</Text>
                 <View style={styles.oddsContainer}>
-                  <View style={styles.oddBox}><Text style={styles.oddValue}>3.815</Text><Text style={styles.oddLabel}>فوز2</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddValue}>3.62</Text><Text style={styles.oddLabel}>التعادل</Text></View>
-                  <View style={styles.oddBox}><Text style={styles.oddValue}>1.87</Text><Text style={styles.oddLabel}>فوز1</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>1.78</Text><Text style={styles.oddLabel}>فوز2</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>3.74</Text><Text style={styles.oddLabel}>التعادل</Text></View>
+                  <View style={styles.oddBox}><Text style={styles.oddValue}>4.09</Text><Text style={styles.oddLabel}>فوز1</Text></View>
                 </View>
               </View>
 
@@ -667,5 +683,55 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#1f2937',
     fontSize: 14,
+  },
+  matchCardHeaderTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  headerTopLeft: {
+    width: 30,
+    alignItems: 'flex-start',
+  },
+  headerTopRight: {
+    width: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  headerTopCenter: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#eee',
+    marginBottom: 12,
+  },
+  soonBadge: {
+    backgroundColor: '#ff4d4f',
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 8,
+    marginRight: 4,
+  },
+  soonText: {
+    color: '#fff',
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
+  timerText: {
+    color: '#17a2b8',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
+  vsText: {
+    color: '#1f2937',
+    fontSize: 16,
+    fontWeight: '900',
   }
 });
