@@ -264,14 +264,14 @@ export function HomeScreen({ onPlayApple }: Props) {
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
                 <View style={styles.casinoCardCoded}>
-                  <Image source={require('../assets/cuteapple.jpg')} style={styles.casinoCardImg} />
+                  <Image source={require('../assets/banner1_real.jpg')} style={styles.casinoCardImg} />
                   <View style={styles.casinoCardInfo}>
                     <Text style={styles.casinoTitle} numberOfLines={1}>Hit Coins 2 Hold...</Text>
                     <Text style={styles.casinoProvider}>Barbara Bang</Text>
                   </View>
                 </View>
                 <View style={styles.casinoCardCoded}>
-                  <Image source={require('../assets/board.jpg')} style={styles.casinoCardImg} />
+                  <Image source={require('../assets/casino1_real.jpg')} style={styles.casinoCardImg} />
                   <View style={styles.casinoCardInfo}>
                     <Text style={styles.casinoTitle} numberOfLines={1}>Royalty Olympus</Text>
                     <Text style={styles.casinoProvider}>Barbara Bang</Text>
@@ -287,18 +287,16 @@ export function HomeScreen({ onPlayApple }: Props) {
                 </View>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-                <View style={styles.categoryCard}>
-                  <View style={[styles.catIconContainer, {backgroundColor: '#ffc107'}]}><Ionicons name="trophy" size={32} color="#fff" /></View>
-                  <Text style={styles.catText}>لك</Text>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/cat1_real.jpg')} style={{width: 100, height: 136, borderRadius: 12}} />
                 </View>
-                <View style={styles.categoryCard}>
-                  <View style={[styles.catIconContainer, {backgroundColor: '#dc3545'}]}><MaterialCommunityIcons name="cards-playing" size={32} color="#fff" /></View>
-                  <Text style={styles.catText}>الأفضل</Text>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/cat2_real.jpg')} style={{width: 221, height: 136, borderRadius: 12}} />
                 </View>
-                <View style={styles.categoryCard}>
-                  <View style={[styles.catIconContainer, {backgroundColor: '#17a2b8'}]}><FontAwesome5 name="dice" size={32} color="#fff" /></View>
-                  <Text style={styles.catText}>اليانصيب</Text>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/cat3_real.jpg')} style={{width: 197, height: 130, borderRadius: 12}} />
                 </View>
+
               </ScrollView>
 
               {/* Featured Games */}
@@ -309,14 +307,16 @@ export function HomeScreen({ onPlayApple }: Props) {
                 </View>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-                <View style={styles.featuredCard}>
-                  <Image source={require('../assets/board.jpg')} style={styles.featuredImg} />
-                  <View style={styles.featuredOverlay}><Text style={styles.featuredTitle}>Midgard Zombies</Text></View>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/feat1_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
                 </View>
-                <View style={styles.featuredCard}>
-                  <Image source={require('../assets/fullapple.jpg')} style={styles.featuredImg} />
-                  <View style={styles.featuredOverlay}><Text style={styles.featuredTitle}>Scratch Card</Text></View>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/feat2_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
                 </View>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/feat3_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
+                </View>
+
               </ScrollView>
 
               {/* Casino Categories */}
@@ -328,18 +328,16 @@ export function HomeScreen({ onPlayApple }: Props) {
                 </View>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-                <View style={styles.categoryCard}>
-                  <View style={[styles.catIconContainer, {backgroundColor: '#e83e8c'}]}><MaterialCommunityIcons name="slot-machine" size={32} color="#fff" /></View>
-                  <Text style={styles.catText}>سلوتات</Text>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/cat1_real.jpg')} style={{width: 100, height: 136, borderRadius: 12}} />
                 </View>
-                <View style={styles.categoryCard}>
-                  <View style={[styles.catIconContainer, {backgroundColor: '#6610f2'}]}><MaterialCommunityIcons name="cards-club" size={32} color="#fff" /></View>
-                  <Text style={styles.catText}>كازينو لايف</Text>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/cat2_real.jpg')} style={{width: 221, height: 136, borderRadius: 12}} />
                 </View>
-                <View style={styles.categoryCard}>
-                  <View style={[styles.catIconContainer, {backgroundColor: '#fd7e14'}]}><Ionicons name="apps" size={32} color="#fff" /></View>
-                  <Text style={styles.catText}>بينجو</Text>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/cat3_real.jpg')} style={{width: 197, height: 130, borderRadius: 12}} />
                 </View>
+
               </ScrollView>
 
               {/* Esports Specialties */}
@@ -352,11 +350,11 @@ export function HomeScreen({ onPlayApple }: Props) {
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
                 <View style={styles.featuredCard}>
-                  <Image source={require('../assets/cuteapple.jpg')} style={styles.featuredImg} />
+                  <Image source={require('../assets/banner1_real.jpg')} style={styles.featuredImg} />
                   <View style={styles.featuredOverlay}><Text style={styles.featuredTitle}>CS 2</Text></View>
                 </View>
                 <View style={styles.featuredCard}>
-                  <Image source={require('../assets/board.jpg')} style={styles.featuredImg} />
+                  <Image source={require('../assets/casino1_real.jpg')} style={styles.featuredImg} />
                   <View style={styles.featuredOverlay}><Text style={styles.featuredTitle}>Dota 2</Text></View>
                 </View>
               </ScrollView>
