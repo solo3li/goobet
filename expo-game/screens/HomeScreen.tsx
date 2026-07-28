@@ -288,7 +288,31 @@ export function HomeScreen({ onPlayApple }: Props) {
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
                 <View style={{marginHorizontal: 5}}>
-                  <Image source={require('../assets/cat1_real.jpg')} style={{width: 100, height: 136, borderRadius: 12}} />
+                  <Image source={require('../assets/feat4_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
+                </View>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/feat3_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
+                </View>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/feat2_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
+                </View>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/feat1_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
+                </View>
+
+
+              </ScrollView>
+
+              {/* Featured Games */}
+              <View style={styles.sectionHeader}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={[styles.pillLabel, {borderColor: '#28a745'}]}><Text style={[styles.pillLabelText, {color: '#28a745'}]}>Games</Text></View>
+                  <Text style={styles.sectionTitle}>موصى بيه</Text>
+                </View>
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+                <View style={{marginHorizontal: 5}}>
+                  <Image source={require('../assets/cat1_real.jpg')} style={{width: 221, height: 136, borderRadius: 12}} />
                 </View>
                 <View style={{marginHorizontal: 5}}>
                   <Image source={require('../assets/cat2_real.jpg')} style={{width: 221, height: 136, borderRadius: 12}} />
@@ -297,25 +321,6 @@ export function HomeScreen({ onPlayApple }: Props) {
                   <Image source={require('../assets/cat3_real.jpg')} style={{width: 197, height: 130, borderRadius: 12}} />
                 </View>
 
-              </ScrollView>
-
-              {/* Featured Games */}
-              <View style={styles.sectionHeader}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <View style={[styles.pillLabel, {borderColor: '#28a745'}]}><Text style={[styles.pillLabelText, {color: '#28a745'}]}>Games</Text></View>
-                  <Text style={styles.sectionTitle}>المتميزة</Text>
-                </View>
-              </View>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-                <View style={{marginHorizontal: 5}}>
-                  <Image source={require('../assets/feat1_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
-                </View>
-                <View style={{marginHorizontal: 5}}>
-                  <Image source={require('../assets/feat2_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
-                </View>
-                <View style={{marginHorizontal: 5}}>
-                  <Image source={require('../assets/feat3_real.jpg')} style={{width: 116, height: 177, borderRadius: 12}} />
-                </View>
 
               </ScrollView>
 
