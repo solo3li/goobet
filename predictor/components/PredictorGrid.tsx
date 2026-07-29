@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Text, Platform, Animated } from 'react-native';
+import { View, StyleSheet, Text, Platform, Animated, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 interface Props {
   gridData: string[][];
@@ -58,24 +62,21 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
       const isCore = gridData[r] ? gridData[r][c] === 'core' : false;
       
       let gradientColors: [string, string, ...string[]] = ['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)'];
-      let symbol = '';
-      let textStyle = styles.textUnknown;
+      let IconComponent = null;
 
       if (isActive || isPast || gridData[r].length > 0) {
         if (isCore) {
           gradientColors = ['rgba(225, 29, 72, 0.2)', 'rgba(159, 18, 57, 0.3)']; // Crimson Hazard
-          symbol = 'RISK';
-          textStyle = styles.textDanger;
+          IconComponent = <MaterialCommunityIcons name="close-thick" size={isMobile ? 18 : 24} color="#fda4af" style={isPast && styles.pastCellText} />;
         } else {
           gradientColors = ['rgba(16, 185, 129, 0.25)', 'rgba(6, 95, 70, 0.35)']; // Emerald Safe
-          symbol = 'SAFE';
-          textStyle = styles.textSafe;
+          IconComponent = <MaterialCommunityIcons name="food-apple" size={isMobile ? 22 : 28} color="#34d399" style={isPast && styles.pastCellText} />;
         }
       }
 
       if (!isPast && !isActive && (!gridData[r] || gridData[r].length === 0 || !gridData[r][c])) {
         // purely unknown
-         symbol = '---';
+         IconComponent = <MaterialCommunityIcons name="minus" size={isMobile ? 18 : 24} color="#475569" />;
          gradientColors = ['rgba(255,255,255,0.02)', 'rgba(255,255,255,0.0)'];
       }
 
@@ -91,7 +92,7 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
               isPast && styles.pastCell
             ]}
           >
-            <Text style={[styles.cellText, textStyle, isPast && styles.pastCellText]}>{symbol}</Text>
+            {IconComponent}
           </LinearGradient>
         </View>
       );
