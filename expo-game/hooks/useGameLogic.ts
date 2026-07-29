@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 export type GameState = 'IDLE' | 'PLAYING' | 'GAMEOVER';
 
 export const MULTIPLIERS = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.97, 69.93, 349.68];
-const API_URL = "http://localhost:8081/api/game";
+const API_URL = "http://178.62.192.74:8081/api/game";
 
 export function useGameLogic() {
   const [balance, setBalance] = useState<number>(10000.00);

@@ -12,7 +12,7 @@ export default function App() {
 
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:8081/gamehub")
+      .withUrl("http://178.62.192.74:8081/gamehub")
       .withAutomaticReconnect()
       .build();
 
