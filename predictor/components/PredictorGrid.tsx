@@ -64,7 +64,8 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
       let gradientColors: [string, string, ...string[]] = ['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)'];
       let IconComponent = null;
 
-      if (isActive || isPast || gridData[r].length > 0) {
+      // Only show predictions for the active row and past rows
+      if (isActive || isPast) {
         if (isCore) {
           gradientColors = ['rgba(225, 29, 72, 0.2)', 'rgba(159, 18, 57, 0.3)']; // Crimson Hazard
           IconComponent = <MaterialCommunityIcons name="close-thick" size={isMobile ? 18 : 24} color="#fda4af" style={isPast && styles.pastCellText} />;
@@ -72,11 +73,9 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
           gradientColors = ['rgba(16, 185, 129, 0.25)', 'rgba(6, 95, 70, 0.35)']; // Emerald Safe
           IconComponent = <MaterialCommunityIcons name="food-apple" size={isMobile ? 22 : 28} color="#34d399" style={isPast && styles.pastCellText} />;
         }
-      }
-
-      if (!isPast && !isActive && (!gridData[r] || gridData[r].length === 0 || !gridData[r][c])) {
-        // purely unknown
-         IconComponent = <MaterialCommunityIcons name="minus" size={isMobile ? 18 : 24} color="#475569" />;
+      } else {
+        // Future rows - Hidden
+         IconComponent = <MaterialCommunityIcons name="help" size={isMobile ? 18 : 24} color="#475569" />;
          gradientColors = ['rgba(255,255,255,0.02)', 'rgba(255,255,255,0.0)'];
       }
 
