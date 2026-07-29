@@ -87,7 +87,8 @@ app.MapPost("/api/game/play", async ([FromBody] PlayRequest req, AppDbContext db
         return Results.Ok(new { 
             status = isWinTop ? "cashed_out" : "won", 
             currentWin = session.CurrentWin, 
-            activeRow = session.ActiveRow 
+            activeRow = session.ActiveRow,
+            gridData = isWinTop ? gridData : null
         });
     }
     else

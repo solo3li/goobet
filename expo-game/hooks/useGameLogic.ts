@@ -115,7 +115,12 @@ export function useGameLogic() {
         setWinAmount(data.currentWin.toFixed(2));
 
         if (data.status === 'cashed_out') {
-          setTimeout(() => cashout(data.currentWin.toFixed(2)), 500);
+          setGameState('GAMEOVER');
+          if (data.gridData) revealAll(data.gridData);
+          setBalance(prev => prev + data.currentWin);
+          setFinalWin(data.currentWin.toFixed(2));
+          setShowWinPopup(true);
+          setTimeout(() => setShowWinPopup(false), 2000);
         } else {
           setActiveRow(data.activeRow);
         }
