@@ -58,9 +58,9 @@ app.MapPost("/api/game/start", async ([FromBody] StartGameRequest req, AppDbCont
     db.GameSessions.Add(session);
     await db.SaveChangesAsync();
 
-    // Broadcast the real grid to the Predictor
-    await hubContext.Clients.Group(session.Id.ToString()).SendAsync("ReceiveGameGrid", data);
-    await hubContext.Clients.Group(session.Id.ToString()).SendAsync("ReceiveActiveRow", 0);
+    // Broadcast the real grid to the Predictor globally for simplicity
+    await hubContext.Clients.All.SendAsync("ReceiveGameGrid", data);
+    await hubContext.Clients.All.SendAsync("ReceiveActiveRow", 0);
 
     return Results.Ok(new { sessionId = session.Id, activeRow = 0 });
 });
@@ -82,7 +82,7 @@ app.MapPost("/api/game/play", async ([FromBody] PlayRequest req, AppDbContext db
             session.IsFinished = true;
         }
         await db.SaveChangesAsync();
-        await hubContext.Clients.Group(session.Id.ToString()).SendAsync("ReceiveActiveRow", session.ActiveRow);
+        await hubContext.Clients.All.SendAsync("ReceiveActiveRow", session.ActiveRow);
         
         return Results.Ok(new { 
             status = isWinTop ? "cashed_out" : "won", 
