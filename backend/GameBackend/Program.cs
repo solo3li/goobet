@@ -5,6 +5,7 @@ using GameBackend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
@@ -20,7 +21,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.Services.AddSignalR();
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) { app.MapOpenApi(); }
+if (app.Environment.IsDevelopment()) { 
+    app.MapOpenApi(); 
+    app.MapScalarApiReference();
+}
 app.UseCors();
 app.UseHttpsRedirection();
 app.MapHub<GameHub>("/gamehub");
