@@ -9,20 +9,29 @@ interface Props {
 
 export function PredictorGrid({ gridData, activeRow }: Props) {
   const pulseAnim = useRef(new Animated.Value(1)).current;
-  const fadeAnim = useRef(new Animated.Value(0.4)).current;
+  const fadeAnim = useRef(new Animated.Value(0.2)).current;
+  const entryAnim = useRef(new Animated.Value(0)).current;
 
+  // Staggered entry animation for the grid
   useEffect(() => {
+    Animated.timing(entryAnim, {
+      toValue: 1,
+      duration: 800,
+      useNativeDriver: false,
+    }).start();
+
+    // Pulse animation for active elements
     Animated.loop(
       Animated.sequence([
-        Animated.timing(pulseAnim, { toValue: 1.05, duration: 1000, useNativeDriver: false }),
-        Animated.timing(pulseAnim, { toValue: 1, duration: 1000, useNativeDriver: false })
+        Animated.timing(pulseAnim, { toValue: 1.05, duration: 1200, useNativeDriver: false }),
+        Animated.timing(pulseAnim, { toValue: 1, duration: 1200, useNativeDriver: false })
       ])
     ).start();
 
     Animated.loop(
       Animated.sequence([
-        Animated.timing(fadeAnim, { toValue: 1, duration: 1500, useNativeDriver: false }),
-        Animated.timing(fadeAnim, { toValue: 0.4, duration: 1500, useNativeDriver: false })
+        Animated.timing(fadeAnim, { toValue: 0.6, duration: 1500, useNativeDriver: false }),
+        Animated.timing(fadeAnim, { toValue: 0.2, duration: 1500, useNativeDriver: false })
       ])
     ).start();
   }, []);
@@ -30,9 +39,9 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
   if (!gridData || gridData.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Animated.View style={[styles.scanCircle, { transform: [{ scale: pulseAnim }], opacity: fadeAnim }]} />
-        <Text style={styles.emptyText}>Waiting for Next Round...</Text>
-        <Text style={styles.emptySubText}>AI is calculating probabilities</Text>
+        <Animated.View style={[styles.scanRadar, { transform: [{ scale: pulseAnim }], opacity: fadeAnim }]} />
+        <Text style={styles.emptyText}>AWAITING SESSION DATA</Text>
+        <Text style={styles.emptySubText}>Establishing secure connection to game engine...</Text>
       </View>
     );
   }
@@ -48,20 +57,26 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
     for (let c = 0; c < 5; c++) {
       const isCore = gridData[r] ? gridData[r][c] === 'core' : false;
       
-      let gradientColors: [string, string, ...string[]] = ['rgba(255,255,255,0.05)', 'rgba(255,255,255,0.02)'];
-      let text = '';
+      let gradientColors: [string, string, ...string[]] = ['rgba(255,255,255,0.03)', 'rgba(255,255,255,0.01)'];
+      let symbol = '';
+      let textStyle = styles.textUnknown;
 
-      if (isActive) {
+      if (isActive || isPast || gridData[r].length > 0) {
         if (isCore) {
-          gradientColors = ['rgba(239, 68, 68, 0.4)', 'rgba(153, 27, 27, 0.4)']; // Reddish hint
-          text = '⚠️';
+          gradientColors = ['rgba(225, 29, 72, 0.2)', 'rgba(159, 18, 57, 0.3)']; // Crimson Hazard
+          symbol = 'RISK';
+          textStyle = styles.textDanger;
         } else {
-          gradientColors = ['rgba(34, 197, 94, 0.8)', 'rgba(21, 128, 61, 0.8)']; // Green glow
-          text = '✅';
+          gradientColors = ['rgba(16, 185, 129, 0.25)', 'rgba(6, 95, 70, 0.35)']; // Emerald Safe
+          symbol = 'SAFE';
+          textStyle = styles.textSafe;
         }
-      } else if (isPast) {
-        gradientColors = ['rgba(255,255,255,0.1)', 'rgba(255,255,255,0.05)'];
-        text = isCore ? '❌' : '🍏';
+      }
+
+      if (!isPast && !isActive && (!gridData[r] || gridData[r].length === 0 || !gridData[r][c])) {
+        // purely unknown
+         symbol = '---';
+         gradientColors = ['rgba(255,255,255,0.02)', 'rgba(255,255,255,0.0)'];
       }
 
       cols.push(
@@ -76,19 +91,30 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
               isPast && styles.pastCell
             ]}
           >
-            <Text style={[styles.cellText, isPast && styles.pastCellText]}>{text}</Text>
+            <Text style={[styles.cellText, textStyle, isPast && styles.pastCellText]}>{symbol}</Text>
           </LinearGradient>
         </View>
       );
     }
     
+    // Add staggered fade in based on row index
+    const translateY = entryAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [50 + (9 - r) * 10, 0]
+    });
+    const opacity = entryAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1]
+    });
+
     rows.push(
       <Animated.View 
         key={r} 
         style={[
           styles.row, 
           isActive && styles.activeRowContainer,
-          isActive && { transform: [{ scale: pulseAnim }] }
+          isActive && { transform: [{ scale: pulseAnim }] },
+          !isActive && { transform: [{ translateY }], opacity }
         ]}
       >
         {isActive && (
@@ -96,14 +122,19 @@ export function PredictorGrid({ gridData, activeRow }: Props) {
             <Animated.View style={[styles.activeIndicator, { opacity: fadeAnim }]} />
           </View>
         )}
-        {cols}
+        <View style={styles.rowLabelContainer}>
+           <Text style={[styles.rowLabel, isActive && styles.rowLabelActive]}>0{r+1}</Text>
+        </View>
+        <View style={styles.cellsContainer}>
+          {cols}
+        </View>
       </Animated.View>
     );
   }
 
   return (
     <View style={styles.gridContainer}>
-      <Text style={styles.multiplierHeader}>AI Probability Matrix</Text>
+      <Text style={styles.matrixHeader}>/// PREDICTION MATRIX</Text>
       {rows}
     </View>
   );
@@ -113,122 +144,146 @@ const styles = StyleSheet.create({
   emptyContainer: { 
     alignItems: 'center', 
     justifyContent: 'center', 
-    marginTop: 100 
+    marginTop: 120 
   },
-  scanCircle: { 
-    width: 120, 
-    height: 120, 
-    borderRadius: 60, 
-    borderWidth: 2, 
-    borderColor: '#0ea5e9', 
-    backgroundColor: 'rgba(14, 165, 233, 0.1)', 
-    marginBottom: 30,
-    shadowColor: '#0ea5e9',
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
+  scanRadar: { 
+    width: 140, 
+    height: 140, 
+    borderRadius: 70, 
+    borderWidth: 1, 
+    borderColor: '#38bdf8', 
+    backgroundColor: 'rgba(56, 189, 248, 0.05)', 
+    marginBottom: 40,
+    shadowColor: '#38bdf8',
+    shadowOpacity: 1,
+    shadowRadius: 30,
     shadowOffset: { width: 0, height: 0 }
   },
   emptyText: { 
-    color: '#e0f2fe', 
-    fontSize: 22, 
-    fontWeight: '800', 
-    letterSpacing: 1,
-    marginBottom: 8
+    color: '#e2e8f0', 
+    fontSize: 20, 
+    fontWeight: '900', 
+    letterSpacing: 3,
+    marginBottom: 10,
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   },
   emptySubText: {
-    color: '#38bdf8',
-    fontSize: 14,
-    opacity: 0.8,
+    color: '#64748b',
+    fontSize: 12,
     textTransform: 'uppercase',
-    letterSpacing: 2
+    letterSpacing: 1
   },
   gridContainer: { 
     width: '100%', 
-    maxWidth: 450, 
+    maxWidth: 500, 
     gap: 12, 
-    paddingBottom: 40 
+    paddingTop: 10,
   },
-  multiplierHeader: { 
-    color: '#0ea5e9', 
-    fontSize: 14, 
-    fontWeight: '800', 
-    textTransform: 'uppercase', 
-    letterSpacing: 3, 
-    textAlign: 'center', 
-    marginBottom: 16,
-    textShadowColor: 'rgba(14, 165, 233, 0.5)',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10
+  matrixHeader: { 
+    color: '#475569', 
+    fontSize: 12, 
+    fontWeight: 'bold', 
+    letterSpacing: 4, 
+    marginBottom: 8,
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   },
   row: { 
     flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    gap: 10, 
+    alignItems: 'center',
+    gap: 12, 
     padding: 8, 
-    borderRadius: 20, 
-    backgroundColor: 'rgba(15, 23, 42, 0.6)',
+    borderRadius: 8, 
+    backgroundColor: 'rgba(255,255,255,0.02)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)'
+    borderColor: 'rgba(255,255,255,0.03)'
   },
   activeRowContainer: { 
-    backgroundColor: 'rgba(14, 165, 233, 0.15)', 
-    borderColor: 'rgba(14, 165, 233, 0.5)', 
-    borderWidth: 1.5, 
-    shadowColor: '#0ea5e9', 
-    shadowOpacity: 0.3, 
+    backgroundColor: 'rgba(56, 189, 248, 0.08)', 
+    borderColor: 'rgba(56, 189, 248, 0.4)', 
+    shadowColor: '#38bdf8', 
+    shadowOpacity: 0.2, 
     shadowRadius: 15, 
     shadowOffset: { width: 0, height: 0 },
     zIndex: 10
   },
+  rowLabelContainer: {
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  rowLabel: {
+    color: '#475569',
+    fontSize: 12,
+    fontWeight: 'bold',
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+  },
+  rowLabelActive: {
+    color: '#38bdf8',
+    textShadowColor: 'rgba(56, 189, 248, 0.5)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
   activeIndicatorWrapper: { 
     position: 'absolute', 
-    left: -18, 
+    left: -12, 
     top: '50%',
     marginTop: -4
   },
   activeIndicator: { 
-    width: 8, 
-    height: 8, 
-    borderRadius: 4, 
-    backgroundColor: '#0ea5e9', 
-    shadowColor: '#0ea5e9', 
+    width: 4, 
+    height: 12, 
+    borderRadius: 2, 
+    backgroundColor: '#38bdf8', 
+    shadowColor: '#38bdf8', 
     shadowOpacity: 1, 
-    shadowRadius: 8,
+    shadowRadius: 10,
     shadowOffset: { width: 0, height: 0 }
+  },
+  cellsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
   },
   cellWrapper: { 
     flex: 1, 
-    aspectRatio: 1 
+    aspectRatio: 1.2 
   },
   cell: { 
     flex: 1, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    borderRadius: 14, 
+    borderRadius: 6, 
     borderWidth: 1, 
     borderColor: 'rgba(255,255,255,0.05)' 
   },
   activeCellSafe: { 
-    borderColor: '#4ade80', 
-    borderWidth: 2,
-    shadowColor: '#22c55e', 
-    shadowOpacity: 0.6, 
-    shadowRadius: 12, 
+    borderColor: '#10b981', 
+    borderWidth: 1.5,
+    shadowColor: '#10b981', 
+    shadowOpacity: 0.4, 
+    shadowRadius: 10, 
     shadowOffset: { width: 0, height: 0 } 
   },
   activeCellDanger: { 
-    borderColor: '#f87171', 
-    borderWidth: 1,
+    borderColor: '#e11d48', 
+    borderWidth: 1.5,
   },
   pastCell: { 
-    opacity: 0.4,
+    opacity: 0.5,
     borderColor: 'transparent'
   },
   cellText: { 
-    fontSize: Platform.OS === 'web' ? 24 : 30 
+    fontSize: 10,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   },
+  textSafe: { color: '#34d399' },
+  textDanger: { color: '#fda4af' },
+  textUnknown: { color: '#475569' },
   pastCellText: { 
-    fontSize: Platform.OS === 'web' ? 20 : 24,
-    opacity: 0.8
+    fontSize: 9,
+    opacity: 0.7
   }
 });
