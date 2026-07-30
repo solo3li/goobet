@@ -34,10 +34,7 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
     paddingHorizontal: 44,
     alignItems: 'center',
-    shadowColor: '#00ff55',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.45,
-    shadowRadius: 32,
+    boxShadow: '0px 0px 32px rgba(0, 255, 85, 0.45)',
     elevation: 10,
   },
   winTitle: {

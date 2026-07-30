@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, SafeAreaView } from 'react-native';
+import { useFonts } from 'expo-font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AppleGame from './screens/AppleGame';
 import LoginScreen from './components/LoginScreen';
 import ProfileDashboard from './components/ProfileDashboard';
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    MaterialCommunityIcons: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf'),
+  });
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountId, setAccountId] = useState('');
   const [balance, setBalance] = useState(0);
@@ -16,6 +21,10 @@ export default function App() {
     setBalance(initialBalance);
     setIsLoggedIn(true);
   };
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   if (!isLoggedIn) {
     return <LoginScreen onLogin={handleLogin} />;
