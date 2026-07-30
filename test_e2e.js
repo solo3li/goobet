@@ -1,81 +1,87 @@
-const http = require('http');
+const signalR = require("@microsoft/signalr");
 
-const request = (path, method, body) => {
-    return new Promise((resolve, reject) => {
-        const data = JSON.stringify(body);
-        const req = http.request({
-            hostname: 'localhost',
-            port: 8081,
-            path: path,
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': Buffer.byteLength(data)
-            }
-        }, res => {
-            let resData = '';
-            res.on('data', chunk => resData += chunk);
-            res.on('end', () => {
-                if (res.statusCode >= 200 && res.statusCode < 300) {
-                    try {
-                        resolve(JSON.parse(resData));
-                    } catch (e) {
-                        resolve(resData);
-                    }
-                } else {
-                    reject(new Error(`Status: ${res.statusCode}, Body: ${resData}`));
-                }
-            });
-        });
-        req.on('error', reject);
-        req.write(data);
-        req.end();
-    });
-};
+async function runTest() {
+  console.log("--- Starting E2E Test ---");
+  const accountId = "1234567890";
+  const password = "testpassword";
 
-async function testE2E() {
-    console.log("=== End-to-End Test for Goobet Apple Game ===\n");
-    try {
-        console.log("1. Starting a new game...");
-        const startRes = await request('/api/game/start', 'POST', { betAmount: 10, playerId: 'test_user' });
-        console.log("Response:", startRes);
-        const sessionId = startRes.sessionId;
-        if (!sessionId) throw new Error("No session ID returned");
-        console.log(`✅ Game started successfully. Session ID: ${sessionId}\n`);
+  // 1. Login
+  console.log("1. Logging in...");
+  const authRes = await fetch("http://127.0.0.1:8081/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ accountId, password })
+  });
+  const authData = await authRes.json();
+  console.log("Auth Response:", authData);
+  
+  if(authData.accountId !== accountId) throw new Error("Login failed");
 
-        let currentRow = 0;
-        let gameStatus = 'playing';
+  // 2. Setup Predictor SignalR Connection
+  console.log("2. Setting up Predictor SignalR connection...");
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://127.0.0.1:8081/gamehub")
+    .build();
 
-        while (gameStatus === 'playing' && currentRow < 10) {
-            console.log(`2. Playing cell (Row: ${currentRow}, Col: 0)...`);
-            try {
-                const playRes = await request('/api/game/play', 'POST', { sessionId, row: currentRow, col: 0 });
-                console.log("Response:", playRes);
-                if (playRes.status === 'won' || playRes.status === 'cashed_out') {
-                    console.log(`✅ Won! Safe apple found. Current Win: ${playRes.currentWin}`);
-                    currentRow = playRes.activeRow;
-                    if (playRes.status === 'cashed_out') {
-                        gameStatus = 'won';
-                    }
-                } else if (playRes.status === 'lost') {
-                    console.log(`❌ Lost! Hit a core. Game over.`);
-                    gameStatus = 'lost';
-                    // Grid data is returned, we can print it
-                    console.log("Revealed Grid (Row 0-4):");
-                    playRes.gridData.slice(0, 5).forEach((r, idx) => {
-                        console.log(`Row ${idx}: ${r.map(c => c === 'core' ? 'X' : 'O').join(' ')}`);
-                    });
-                }
-            } catch (err) {
-                console.error("Error during play:", err.message);
-                break;
-            }
-        }
-        
-        console.log("\n=== Test Completed Successfully ===");
-    } catch (err) {
-        console.error("Test failed:", err.message);
-    }
+  let receivedGrid = false;
+  let receivedActiveRow = -1;
+
+  connection.on("ReceiveGameGrid", (grid) => {
+    console.log("Predictor received Grid of length:", grid.length);
+    receivedGrid = true;
+  });
+
+  connection.on("ReceiveActiveRow", (row) => {
+    console.log("Predictor received ActiveRow update:", row);
+    receivedActiveRow = row;
+  });
+
+  await connection.start();
+  console.log("SignalR connected. Subscribing to accountId:", accountId);
+  await connection.invoke("SubscribeToSession", accountId);
+  
+  // 3. Start Game
+  console.log("3. Starting Game...");
+  const startRes = await fetch("http://127.0.0.1:8081/api/game/start", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ betAmount: 10, playerId: accountId })
+  });
+  const startData = await startRes.json();
+  console.log("Start Game Response:", startData);
+  
+  if(!startData.sessionId) throw new Error("Failed to start game");
+  const sessionId = startData.sessionId;
+
+  // Wait a bit for SignalR events
+  await new Promise(r => setTimeout(r, 500));
+
+  if(!receivedGrid || receivedActiveRow !== 0) {
+    throw new Error("SignalR did not receive initial grid or row 0");
+  }
+
+  // 4. Play Game (Row 0, Col 0)
+  console.log("4. Playing row 0, col 0...");
+  const playRes = await fetch("http://127.0.0.1:8081/api/game/play", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sessionId, row: 0, col: 0 })
+  });
+  const playData = await playRes.json();
+  console.log("Play Game Response:", playData);
+
+  // Wait for SignalR events
+  await new Promise(r => setTimeout(r, 500));
+
+  if (playData.status === "won" && receivedActiveRow !== 1) {
+    throw new Error("SignalR did not receive active row 1");
+  }
+
+  console.log("--- E2E Test Passed Successfully! ---");
+  await connection.stop();
 }
 
-testE2E();
+runTest().catch(err => {
+  console.error("Test Failed:", err);
+  process.exit(1);
+});
