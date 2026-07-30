@@ -5,7 +5,7 @@ export type GameState = 'IDLE' | 'PLAYING' | 'GAMEOVER';
 export const MULTIPLIERS = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.97, 69.93, 349.68];
 const API_URL = "http://178.62.192.74:8081/api/game";
 
-export function useGameLogic() {
+export function useGameLogic(accountId: string, onBalanceChange: (balance: number) => void) {
   const [balance, setBalance] = useState<number>(10000.00);
   const [currentBet, setCurrentBet] = useState<string>('1.00');
   const [gameState, setGameState] = useState<GameState>('IDLE');
@@ -26,12 +26,16 @@ export function useGameLogic() {
       const response = await fetch(`${API_URL}/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ betAmount: bet, playerId: 'player1' })
+        body: JSON.stringify({ betAmount: bet, playerId: accountId })
       });
       const data = await response.json();
       
       setSessionId(data.sessionId);
-      setBalance(prev => prev - bet);
+      setBalance(prev => {
+        const newBalance = prev - bet;
+        onBalanceChange(newBalance);
+        return newBalance;
+      });
       setGameState('PLAYING');
       setActiveRow(0);
       setWinAmount('0.00');

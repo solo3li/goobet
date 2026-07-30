@@ -10,5 +10,6 @@ namespace GameBackend.Data
         }
 
         public DbSet<GameSession> GameSessions { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

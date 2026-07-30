@@ -8,10 +8,12 @@ import { BottomBar } from '../components/BottomBar';
 import { WinModal } from '../components/WinModal';
 
 interface Props {
-  onBack: () => void;
+  accountId: string;
+  balance: number;
+  onBalanceChange: (b: number) => void;
 }
 
-export function AppleGame({ onBack }: Props) {
+export default function AppleGame({ accountId, onBalanceChange }: Props) {
   const {
     balance,
     currentBet,
@@ -25,7 +27,7 @@ export function AppleGame({ onBack }: Props) {
     cashout,
     handleCellClick,
     modifyBet
-  } = useGameLogic();
+  } = useGameLogic(accountId, onBalanceChange);
 
   const { height } = useWindowDimensions();
   const idealWidth = Math.min(450, height * (394 / 854));
@@ -36,7 +38,7 @@ export function AppleGame({ onBack }: Props) {
         <ImageBackground source={require('../assets/background.jpg')} style={styles.background} resizeMode="cover">
           <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" />
-            <Header balance={balance} onBack={onBack} />
+            <Header balance={balance} onBack={() => {}} />
             <Text style={styles.title}>APPLE OF FORTUNE</Text>
             
             <View style={styles.gameArea}>

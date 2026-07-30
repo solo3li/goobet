@@ -32,7 +32,25 @@ app.MapHub<GameHub>("/gamehub");
 double[] MULTIPLIERS = { 1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.97, 69.93, 349.68 };
 int[] CORES_PER_ROW = { 1, 1, 1, 1, 2, 2, 2, 3, 3, 4 };
 
+app.MapPost("/api/auth/login", async ([FromBody] AuthRequest req, AppDbContext db) => {
+    var user = await db.Users.FindAsync(req.AccountId);
+    if (user == null) {
+        // Create user for simplicity
+        user = new User { AccountId = req.AccountId, Password = req.Password, Balance = 1000.0m };
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
+    } else {
+        if (user.Password != req.Password) return Results.BadRequest("Invalid password");
+    }
+    return Results.Ok(new { accountId = user.AccountId, balance = user.Balance });
+});
+
 app.MapPost("/api/game/start", async ([FromBody] StartGameRequest req, AppDbContext db, IHubContext<GameHub> hubContext) => {
+    var user = await db.Users.FindAsync(req.PlayerId);
+    if (user == null || user.Balance < req.BetAmount) return Results.BadRequest("Insufficient funds or user not found");
+
+    user.Balance -= req.BetAmount;
+
     var data = new string[10][];
     for (int r = 0; r < 10; r++)
     {
@@ -53,22 +71,23 @@ app.MapPost("/api/game/start", async ([FromBody] StartGameRequest req, AppDbCont
     var session = new GameSession {
         BetAmount = req.BetAmount,
         GridData = JsonSerializer.Serialize(data),
-        PlayerId = req.PlayerId ?? "anonymous"
+        PlayerId = req.PlayerId
     };
     db.GameSessions.Add(session);
     await db.SaveChangesAsync();
 
-    // Broadcast the real grid to the Predictor globally for simplicity
-    await hubContext.Clients.All.SendAsync("ReceiveGameGrid", data);
-    await hubContext.Clients.All.SendAsync("ReceiveActiveRow", 0);
+    await hubContext.Clients.Group(req.PlayerId).SendAsync("ReceiveGameGrid", data);
+    await hubContext.Clients.Group(req.PlayerId).SendAsync("ReceiveActiveRow", 0);
 
-    return Results.Ok(new { sessionId = session.Id, activeRow = 0 });
+    return Results.Ok(new { sessionId = session.Id, activeRow = 0, newBalance = user.Balance });
 });
 
 app.MapPost("/api/game/play", async ([FromBody] PlayRequest req, AppDbContext db, IHubContext<GameHub> hubContext) => {
     var session = await db.GameSessions.FindAsync(req.SessionId);
     if (session == null || session.IsFinished) return Results.BadRequest("Invalid or finished session.");
     if (req.Row != session.ActiveRow) return Results.BadRequest("Invalid row.");
+
+    var user = await db.Users.FindAsync(session.PlayerId);
 
     var gridData = JsonSerializer.Deserialize<string[][]>(session.GridData);
     bool isCore = gridData[req.Row][req.Col] == "core";
@@ -80,23 +99,24 @@ app.MapPost("/api/game/play", async ([FromBody] PlayRequest req, AppDbContext db
         bool isWinTop = session.ActiveRow == 10;
         if(isWinTop) {
             session.IsFinished = true;
+            if(user != null) user.Balance += session.CurrentWin;
         }
         await db.SaveChangesAsync();
-        await hubContext.Clients.All.SendAsync("ReceiveActiveRow", session.ActiveRow);
+        await hubContext.Clients.Group(session.PlayerId).SendAsync("ReceiveActiveRow", session.ActiveRow);
         
         return Results.Ok(new { 
             status = isWinTop ? "cashed_out" : "won", 
             currentWin = session.CurrentWin, 
             activeRow = session.ActiveRow,
-            gridData = isWinTop ? gridData : null
+            gridData = isWinTop ? gridData : null,
+            newBalance = user?.Balance
         });
     }
     else
     {
         session.IsFinished = true;
         await db.SaveChangesAsync();
-        // Return full grid so client sees where cores were
-        return Results.Ok(new { status = "lost", gridData });
+        return Results.Ok(new { status = "lost", gridData, newBalance = user?.Balance });
     }
 });
 
@@ -104,10 +124,14 @@ app.MapPost("/api/game/cashout", async ([FromBody] CashoutRequest req, AppDbCont
     var session = await db.GameSessions.FindAsync(req.SessionId);
     if (session == null || session.IsFinished) return Results.BadRequest("Invalid session.");
     
+    var user = await db.Users.FindAsync(session.PlayerId);
+
     session.IsFinished = true;
+    if(user != null) user.Balance += session.CurrentWin;
+
     await db.SaveChangesAsync();
     var gridData = JsonSerializer.Deserialize<string[][]>(session.GridData);
-    return Results.Ok(new { status = "cashed_out", currentWin = session.CurrentWin, gridData });
+    return Results.Ok(new { status = "cashed_out", currentWin = session.CurrentWin, gridData, newBalance = user?.Balance });
 });
 
 using (var scope = app.Services.CreateScope())
@@ -120,3 +144,4 @@ app.Run();
 public class StartGameRequest { public decimal BetAmount { get; set; } public string? PlayerId { get; set; } }
 public class PlayRequest { public Guid SessionId { get; set; } public int Row { get; set; } public int Col { get; set; } }
 public class CashoutRequest { public Guid SessionId { get; set; } }
+public class AuthRequest { public string AccountId { get; set; } = string.Empty; public string Password { get; set; } = string.Empty; }

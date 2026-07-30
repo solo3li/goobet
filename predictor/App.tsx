@@ -2,17 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, SafeAreaView, StatusBar, Platform, ScrollView, Animated, Dimensions } from 'react-native';
 import * as signalR from '@microsoft/signalr';
 import { PredictorGrid } from './components/PredictorGrid';
+import PredictorLogin from './components/PredictorLogin';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 const isMobile = width < 768;
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accountId, setAccountId] = useState<string>('');
+  
   const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
   const [gridData, setGridData] = useState<string[][]>([]);
   const [activeRow, setActiveRow] = useState<number>(0);
   const [status, setStatus] = useState<string>('Initializing...');
-  const [sessionId, setSessionId] = useState<string>('test-session'); 
   const [latency, setLatency] = useState<number>(0);
 
   // Fake latency simulation for telemetry realism
@@ -26,20 +29,22 @@ export default function App() {
   }, [status]);
 
   useEffect(() => {
+    if (!isLoggedIn) return;
+
     const newConnection = new signalR.HubConnectionBuilder()
       .withUrl("http://178.62.192.74:8081/gamehub")
       .withAutomaticReconnect()
       .build();
 
     setConnection(newConnection);
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
-    if (connection) {
+    if (connection && isLoggedIn) {
       connection.start()
         .then(() => {
           setStatus('Connected');
-          connection.invoke('SubscribeToSession', sessionId);
+          connection.invoke('SubscribeToSession', accountId);
 
           connection.on('ReceiveGameGrid', (data: string[][]) => {
             setGridData(data);
@@ -51,9 +56,16 @@ export default function App() {
         })
         .catch(e => setStatus(`Connection failed`));
     }
-  }, [connection, sessionId]);
+  }, [connection, isLoggedIn, accountId]);
 
   const currentMultiplier = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.97, 69.93, 349.68][activeRow] || 0.00;
+
+  if (!isLoggedIn) {
+    return <PredictorLogin onLogin={(id) => {
+      setAccountId(id);
+      setIsLoggedIn(true);
+    }} />;
+  }
 
   return (
     <LinearGradient colors={['#050814', '#0B1121']} style={styles.safeArea}>
