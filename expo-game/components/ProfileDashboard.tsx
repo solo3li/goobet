@@ -6,9 +6,10 @@ interface ProfileDashboardProps {
   accountId: string;
   balance: number;
   onOpenGame: () => void;
+  onNavigateToHome: () => void;
 }
 
-export default function ProfileDashboard({ accountId, balance, onOpenGame }: ProfileDashboardProps) {
+export default function ProfileDashboard({ accountId, balance, onOpenGame, onNavigateToHome }: ProfileDashboardProps) {
   return (
     <SafeAreaView style={styles.container}>
       {/* Top Header */}
@@ -32,7 +33,7 @@ export default function ProfileDashboard({ accountId, balance, onOpenGame }: Pro
 
       {/* Tabs */}
       <View style={styles.tabsContainer}>
-        <TouchableOpacity style={[styles.tab, styles.activeTab]}>
+        <TouchableOpacity style={[styles.tab, styles.activeTab]} onPress={onNavigateToHome}>
           <MaterialCommunityIcons name="star-circle" size={24} color="#1ab0e5" />
           <Text style={styles.activeTabText}>أعلى</Text>
         </TouchableOpacity>
@@ -109,7 +110,7 @@ export default function ProfileDashboard({ accountId, balance, onOpenGame }: Pro
           <MaterialCommunityIcons name="star-outline" size={24} color="#999" />
           <Text style={styles.navText}>المفضلة</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={onNavigateToHome}>
           <MaterialCommunityIcons name="fire" size={24} color="#999" />
           <Text style={styles.navText}>رائج</Text>
         </TouchableOpacity>

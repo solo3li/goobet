@@ -4,9 +4,10 @@ import { MaterialCommunityIcons, FontAwesome5, Ionicons } from '@expo/vector-ico
 
 interface Props {
   onPlayApple: () => void;
+  onNavigateToMenu: () => void;
 }
 
-export function HomeScreen({ onPlayApple }: Props) {
+export function HomeScreen({ onPlayApple, onNavigateToMenu }: Props) {
   const [activeTab, setActiveTab] = useState('أعلى');
   const { height } = useWindowDimensions();
   const idealWidth = Math.min(450, height * (394 / 854));
@@ -403,7 +404,7 @@ export function HomeScreen({ onPlayApple }: Props) {
           )}
           {/* Bottom Navigation */}
           <View style={styles.bottomNav}>
-            <TouchableOpacity style={styles.navItem}>
+            <TouchableOpacity style={styles.navItem} onPress={onNavigateToMenu}>
               <MaterialCommunityIcons name="menu" size={24} color="#b0b5bd" />
               <Text style={styles.navText}>القائمة</Text>
             </TouchableOpacity>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, SafeAreaView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { HomeScreen } from './screens/HomeScreen';
 import AppleGame from './screens/AppleGame';
 import LoginScreen from './components/LoginScreen';
 import ProfileDashboard from './components/ProfileDashboard';
@@ -9,7 +10,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountId, setAccountId] = useState('');
   const [balance, setBalance] = useState(0);
-  const [currentScreen, setCurrentScreen] = useState<'dashboard' | 'game'>('dashboard');
+  const [currentScreen, setCurrentScreen] = useState<'home' | 'menu' | 'game'>('home');
 
   const handleLogin = (id: string, initialBalance: number) => {
     setAccountId(id);
@@ -23,16 +24,22 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {currentScreen === 'dashboard' ? (
+      {currentScreen === 'home' ? (
+        <HomeScreen 
+          onPlayApple={() => setCurrentScreen('game')}
+          onNavigateToMenu={() => setCurrentScreen('menu')}
+        />
+      ) : currentScreen === 'menu' ? (
         <ProfileDashboard 
           accountId={accountId} 
           balance={balance} 
           onOpenGame={() => setCurrentScreen('game')} 
+          onNavigateToHome={() => setCurrentScreen('home')}
         />
       ) : (
         <SafeAreaView style={{flex: 1}}>
           <View style={styles.gameHeader}>
-            <TouchableOpacity onPress={() => setCurrentScreen('dashboard')} style={styles.backBtn}>
+            <TouchableOpacity onPress={() => setCurrentScreen('menu')} style={styles.backBtn}>
               <MaterialCommunityIcons name="arrow-right" size={24} color="#fff" />
               <Text style={styles.backText}>رجوع</Text>
             </TouchableOpacity>
