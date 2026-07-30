@@ -137,10 +137,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 20,
     minHeight: height * 0.6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+    boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.1)',
     elevation: 10,
   },
   title: {
