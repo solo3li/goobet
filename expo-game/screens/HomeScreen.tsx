@@ -24,7 +24,7 @@ export function HomeScreen({ onPlayApple, onNavigateToMenu }: Props) {
             </TouchableOpacity>
             
             <View style={styles.logoContainer}>
-              <Image source={require('../assets/goobetheder.png')} style={styles.headerLogoImage} resizeMode="contain" />
+              <Text style={styles.logoText}>GOOO<Text style={styles.logoTextLight}>bet</Text></Text>
             </View>
             
             <View style={styles.balanceContainer}>
@@ -464,9 +464,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  headerLogoImage: {
-    width: 140,
-    height: 35,
+  logoText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#17a2b8',
+    letterSpacing: -1,
+  },
+  logoTextLight: {
+    fontWeight: 'normal',
+    color: '#333',
   },
   balanceContainer: {
     flexDirection: 'row',
