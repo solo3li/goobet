@@ -24,7 +24,7 @@ export function HomeScreen({ onPlayApple, onNavigateToMenu }: Props) {
             </TouchableOpacity>
             
             <View style={styles.logoContainer}>
-              <Text style={styles.logoText}>GOOO<Text style={styles.logoTextLight}>bet</Text></Text>
+              <Image source={require('../assets/goologo_nobg.png')} style={styles.headerLogoImage} resizeMode="contain" />
             </View>
             
             <View style={styles.balanceContainer}>
@@ -463,6 +463,10 @@ const styles = StyleSheet.create({
   logoContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  headerLogoImage: {
+    width: 140,
+    height: 35,
   },
   logoText: {
     fontSize: 22,
