@@ -144,15 +144,42 @@ export function HomeScreen({ onPlayApple, onNavigateToMenu }: Props) {
 
               {/* Promo Banners */}
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bannersScroll}>
-                <Image source={require('../assets/promo_banner_1.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_2.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_3.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_4.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_5.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_6.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_7.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_8.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/promo_banner_9.png')} style={styles.promoBanner} />
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_1.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>رهان مجاني على{'\n'}رهانك الأول</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_2.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>تراكم اليوم</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_3.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>الرهان المتقدم</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_4.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>10%{'\n'}CASHBACK</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_5.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>BOOSTER{'\n'}BONUS</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_6.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>مكافأة 50%{'\n'}على إيداعك</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_7.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>استرداد الاموال{'\n'}بنسبة 100%</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_8.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>السبت المحظوظ</Text>
+                </View>
+                <View style={styles.promoItem}>
+                  <Image source={require('../assets/promo_banner_9.png')} style={styles.promoBannerImg} />
+                  <Text style={styles.promoText} numberOfLines={2}>الخميس +50%</Text>
+                </View>
               </ScrollView>
 
               {/* Live Match */}
@@ -708,11 +735,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
-  promoBanner: {
-    width: 150,
-    height: 152,
-    borderRadius: 16,
+  promoItem: {
+    alignItems: 'center',
     marginHorizontal: 5,
+    width: 140,
+  },
+  promoBannerImg: {
+    width: 140,
+    height: 140,
+    borderRadius: 30,
+  },
+  promoText: {
+    marginTop: 8,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
   },
   pillLabel: {
     borderWidth: 1,
