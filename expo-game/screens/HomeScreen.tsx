@@ -144,9 +144,15 @@ export function HomeScreen({ onPlayApple, onNavigateToMenu }: Props) {
 
               {/* Promo Banners */}
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bannersScroll}>
-                <Image source={require('../assets/banner1.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/banner2.png')} style={styles.promoBanner} />
-                <Image source={require('../assets/banner3.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_1.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_2.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_3.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_4.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_5.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_6.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_7.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_8.png')} style={styles.promoBanner} />
+                <Image source={require('../assets/promo_banner_9.png')} style={styles.promoBanner} />
               </ScrollView>
 
               {/* Live Match */}
