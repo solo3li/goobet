@@ -671,9 +671,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 6,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    boxShadow: '0px 0px 3px rgba(0, 0, 0, 0.05)',
     elevation: 2,
   },
   sportIconCircleActive: {
@@ -684,9 +682,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 6,
-    shadowColor: '#17a2b8',
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    boxShadow: '0px 0px 4px rgba(23, 162, 184, 0.3)',
     elevation: 4,
   },
   sportText: {
@@ -727,9 +723,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     padding: 12,
     marginBottom: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
+    boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.05)',
     elevation: 3,
   },
   matchCardHeader: {

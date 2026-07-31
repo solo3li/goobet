@@ -13,9 +13,8 @@ interface Props {
   onBalanceChange: (b: number) => void;
 }
 
-export default function AppleGame({ accountId, onBalanceChange }: Props) {
+export default function AppleGame({ accountId, balance, onBalanceChange }: Props) {
   const {
-    balance,
     currentBet,
     gameState,
     activeRow,
@@ -27,7 +26,7 @@ export default function AppleGame({ accountId, onBalanceChange }: Props) {
     cashout,
     handleCellClick,
     modifyBet
-  } = useGameLogic(accountId, onBalanceChange);
+  } = useGameLogic(accountId, balance, onBalanceChange);
 
   const { height } = useWindowDimensions();
   const idealWidth = Math.min(450, height * (394 / 854));

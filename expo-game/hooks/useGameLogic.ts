@@ -5,8 +5,7 @@ export type GameState = 'IDLE' | 'PLAYING' | 'GAMEOVER';
 export const MULTIPLIERS = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.97, 69.93, 349.68];
 const API_URL = "http://178.62.192.74:8081/api/game";
 
-export function useGameLogic(accountId: string, onBalanceChange: (balance: number) => void) {
-  const [balance, setBalance] = useState<number>(10000.00);
+export function useGameLogic(accountId: string, balance: number, onBalanceChange: (balance: number) => void) {
   const [currentBet, setCurrentBet] = useState<string>('1.00');
   const [gameState, setGameState] = useState<GameState>('IDLE');
   const [activeRow, setActiveRow] = useState<number>(0);
@@ -31,11 +30,7 @@ export function useGameLogic(accountId: string, onBalanceChange: (balance: numbe
       const data = await response.json();
       
       setSessionId(data.sessionId);
-      setBalance(prev => {
-        const newBalance = prev - bet;
-        onBalanceChange(newBalance);
-        return newBalance;
-      });
+      onBalanceChange(balance - bet);
       setGameState('PLAYING');
       setActiveRow(0);
       setWinAmount('0.00');
@@ -73,7 +68,7 @@ export function useGameLogic(accountId: string, onBalanceChange: (balance: numbe
         amount = (parseFloat(currentBet) * MULTIPLIERS[activeRow - 1]).toFixed(2);
       }
 
-      setBalance(prev => prev + parseFloat(amount!));
+      onBalanceChange(balance + parseFloat(amount!));
       setFinalWin(amount!);
       setShowWinPopup(true);
       setGameState('GAMEOVER');
@@ -121,7 +116,7 @@ export function useGameLogic(accountId: string, onBalanceChange: (balance: numbe
         if (data.status === 'cashed_out') {
           setGameState('GAMEOVER');
           if (data.gridData) revealAll(data.gridData);
-          setBalance(prev => prev + data.currentWin);
+          onBalanceChange(balance + data.currentWin);
           setFinalWin(data.currentWin.toFixed(2));
           setShowWinPopup(true);
           setTimeout(() => setShowWinPopup(false), 2000);
