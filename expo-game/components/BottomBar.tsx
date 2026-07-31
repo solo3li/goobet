@@ -33,27 +33,29 @@ export function BottomBar({ gameState, currentBet, onModifyBet, onStartGame, onC
             </TouchableOpacity>
           </View>
           
-          <View style={styles.betInputRow}>
+          <View style={styles.mergedInputContainer}>
             <TouchableOpacity
               onPress={onStartGame}
               style={[styles.playBtnContainer, isLoading && styles.btnDisabled]}
               disabled={isLoading}
             >
-              <LinearGradient colors={['#2db3ff', '#0b8deb']} style={styles.playBtn}>
+              <LinearGradient colors={['#1ba1e2', '#1476a6']} style={styles.playBtn}>
                 <Text style={styles.playBtnText}>{isLoading ? 'جاري...' : 'الرهان'}</Text>
               </LinearGradient>
             </TouchableOpacity>
 
-            <View style={styles.betInputContainer}>
+            <View style={styles.betInputArea}>
               <View style={styles.betInputWrapper}>
-                <Text style={styles.currencyInput}>ج.م</Text>
                 <TextInput 
                   style={styles.betInput} 
                   value={currentBet} 
                   editable={false} 
                 />
+                <Text style={styles.currencyInput}>ج.م</Text>
               </View>
-              <Text style={styles.minMaxText}>ج.م max 6782.37 - ج.م min 10</Text>
+              <View style={styles.minMaxRow}>
+                <Text style={styles.minMaxText}>ج.م min 10 - max 6664.97 ج.م</Text>
+              </View>
             </View>
           </View>
 
@@ -92,73 +94,85 @@ const styles = StyleSheet.create({
   bottomBar: {
     paddingTop: 12,
     paddingHorizontal: 16,
-    paddingBottom: 16,
-    backgroundColor: '#111820', // Darker solid background based on screenshot
+    paddingBottom: 24,
+    backgroundColor: 'rgba(21, 32, 43, 0.95)', // Semi-transparent dark background
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     zIndex: 10,
   },
   betControls: {
     flexDirection: 'row',
-    gap: 6,
-    marginBottom: 10,
+    gap: 8,
+    marginBottom: 16,
   },
   betBtn: {
     flex: 1,
-    backgroundColor: '#1d3e51',
-    paddingVertical: 10,
+    backgroundColor: '#1b3b4a', // Dark teal
+    paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#265166',
   },
   betBtnText: {
-    color: '#84a5b5',
+    color: '#a0c4d6',
     fontSize: 14,
+    fontWeight: '600',
   },
-  betInputRow: {
+  mergedInputContainer: {
     flexDirection: 'row',
-    gap: 12,
-    alignItems: 'flex-start',
-    marginBottom: 14,
+    backgroundColor: '#2b3643', // Dark grey/blue input background
+    borderRadius: 12,
+    marginBottom: 16,
+    overflow: 'hidden',
+    height: 65,
   },
-  betInputContainer: {
+  betInputArea: {
     flex: 2,
-    backgroundColor: '#2a333d',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
   },
   betInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.2)',
+    borderBottomColor: 'rgba(255,255,255,0.1)',
     paddingBottom: 4,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   currencyInput: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 22,
+    marginLeft: 8,
   },
   betInput: {
     flex: 1,
     color: '#fff',
-    fontSize: 20,
+    fontSize: 24,
     textAlign: 'right',
+    fontWeight: 'bold',
     ...(Platform.OS === 'web' && { outlineStyle: 'none' as any }),
+  },
+  minMaxRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   minMaxText: {
     color: '#888',
-    fontSize: 10,
-    textAlign: 'right',
+    fontSize: 11,
   },
   playBtnContainer: {
-    flex: 1.2,
-    height: 55,
+    flex: 1.1,
   },
   playBtn: {
     flex: 1,
-    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 12,
+    borderBottomLeftRadius: 12,
   },
   playBtnText: {
     color: '#fff',

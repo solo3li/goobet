@@ -35,6 +35,7 @@ export function GameGrid({ gameState, activeRow, gridData, revealedCells, onCell
       const isRevealed = revealedCells[r] ? revealedCells[r][c] : false;
       const isCore = gridData[r] ? gridData[r][c] === 'core' : false;
       const isActive = gameState === 'PLAYING' && r === activeRow && !isRevealed;
+      const isFutureRow = gameState === 'PLAYING' && r > activeRow;
 
       cols.push(
         <Cell
@@ -46,10 +47,13 @@ export function GameGrid({ gameState, activeRow, gridData, revealedCells, onCell
         />
       );
     }
+
+    const isFutureRow = gameState === 'PLAYING' && r > activeRow;
+
     rows.push(
       <View 
         key={r} 
-        style={styles.row}
+        style={[styles.row, isFutureRow && { opacity: 0.6 }]}
         onLayout={(e) => {
           if (r === 0 && rowHeight === 0) {
             setRowHeight(e.nativeEvent.layout.height);
@@ -86,6 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 4,
+    alignItems: 'center',
+    gap: 6,
   }
 });

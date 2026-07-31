@@ -12,9 +12,10 @@ interface Props {
   balance: number;
   onBalanceChange: (b: number) => void;
   authToken: string;
+  onBack?: () => void;
 }
 
-export default function AppleGame({ accountId, balance, onBalanceChange, authToken }: Props) {
+export default function AppleGame({ accountId, balance, onBalanceChange, authToken, onBack }: Props) {
   const {
     currentBet,
     gameState,
@@ -37,10 +38,10 @@ export default function AppleGame({ accountId, balance, onBalanceChange, authTok
   return (
     <View style={styles.root}>
       <View style={[styles.gameContainer, { width: Platform.OS === 'web' ? idealWidth : '100%' }]}>
-        <ImageBackground source={require('../assets/background.jpg')} style={styles.background} resizeMode="cover">
+        <ImageBackground source={require('../assets/background.png')} style={styles.background} resizeMode="cover">
           <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" />
-            <Header balance={balance} onBack={() => {}} />
+            <Header balance={balance} onBack={onBack || (() => {})} />
             <Text style={styles.title}>APPLE OF FORTUNE</Text>
 
             {/* Error Banner */}
