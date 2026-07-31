@@ -11,9 +11,10 @@ interface Props {
   accountId: string;
   balance: number;
   onBalanceChange: (b: number) => void;
+  authToken: string;
 }
 
-export default function AppleGame({ accountId, balance, onBalanceChange }: Props) {
+export default function AppleGame({ accountId, balance, onBalanceChange, authToken }: Props) {
   const {
     currentBet,
     gameState,
@@ -22,11 +23,13 @@ export default function AppleGame({ accountId, balance, onBalanceChange }: Props
     revealedCells,
     showWinPopup,
     finalWin,
+    isLoading,
+    error,
     startGame,
     cashout,
     handleCellClick,
-    modifyBet
-  } = useGameLogic(accountId, balance, onBalanceChange);
+    modifyBet,
+  } = useGameLogic(accountId, balance, onBalanceChange, authToken);
 
   const { height } = useWindowDimensions();
   const idealWidth = Math.min(450, height * (394 / 854));
@@ -39,7 +42,14 @@ export default function AppleGame({ accountId, balance, onBalanceChange }: Props
             <StatusBar barStyle="light-content" />
             <Header balance={balance} onBack={() => {}} />
             <Text style={styles.title}>APPLE OF FORTUNE</Text>
-            
+
+            {/* Error Banner */}
+            {error ? (
+              <View style={styles.errorBanner}>
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            ) : null}
+
             <View style={styles.gameArea}>
               <Multipliers activeRow={activeRow} gameState={gameState} />
               <GameGrid
@@ -57,6 +67,7 @@ export default function AppleGame({ accountId, balance, onBalanceChange }: Props
               onModifyBet={modifyBet}
               onStartGame={startGame}
               onCashout={cashout}
+              isLoading={isLoading}
             />
 
             <WinModal visible={showWinPopup} amount={finalWin} />
@@ -106,5 +117,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     zIndex: 10,
     overflow: 'hidden',
-  }
+  },
+  errorBanner: {
+    backgroundColor: 'rgba(220,38,38,0.85)',
+    marginHorizontal: 12,
+    marginBottom: 4,
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    zIndex: 20,
+  },
+  errorText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 13,
+    fontWeight: '600',
+  },
 });

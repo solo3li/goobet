@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, Dimensions, SafeAreaView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { API_BASE_URL } from '../config';
 
 const { width, height } = Dimensions.get('window');
 
 interface LoginScreenProps {
-  onLogin: (accountId: string, balance: number) => void;
+  onLogin: (accountId: string, balance: number, token: string) => void;
 }
 
 export default function LoginScreen({ onLogin }: LoginScreenProps) {
@@ -23,7 +24,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
     setError('');
     
     try {
-      const response = await fetch('http://178.62.192.74:8081/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
       if (!response.ok) {
         setError(data || 'خطأ في تسجيل الدخول');
       } else {
-        onLogin(data.accountId, data.balance);
+        onLogin(data.accountId, data.balance, data.token);
       }
     } catch (err) {
       setError('حدث خطأ في الاتصال بالسيرفر');

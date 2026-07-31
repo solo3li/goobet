@@ -8,9 +8,10 @@ interface Props {
   onModifyBet: (type: 'MIN' | 'MAX' | 'X/2' | 'X2') => void;
   onStartGame: () => void;
   onCashout: () => void;
+  isLoading?: boolean;
 }
 
-export function BottomBar({ gameState, currentBet, onModifyBet, onStartGame, onCashout }: Props) {
+export function BottomBar({ gameState, currentBet, onModifyBet, onStartGame, onCashout, isLoading = false }: Props) {
   const isPlaying = gameState === 'PLAYING';
 
   return (
@@ -33,9 +34,13 @@ export function BottomBar({ gameState, currentBet, onModifyBet, onStartGame, onC
           </View>
           
           <View style={styles.betInputRow}>
-            <TouchableOpacity onPress={onStartGame} style={styles.playBtnContainer}>
+            <TouchableOpacity
+              onPress={onStartGame}
+              style={[styles.playBtnContainer, isLoading && styles.btnDisabled]}
+              disabled={isLoading}
+            >
               <LinearGradient colors={['#2db3ff', '#0b8deb']} style={styles.playBtn}>
-                <Text style={styles.playBtnText}>الرهان</Text>
+                <Text style={styles.playBtnText}>{isLoading ? 'جاري...' : 'الرهان'}</Text>
               </LinearGradient>
             </TouchableOpacity>
 
@@ -68,9 +73,13 @@ export function BottomBar({ gameState, currentBet, onModifyBet, onStartGame, onC
         </View>
       ) : (
         <View style={styles.cashoutControls}>
-          <TouchableOpacity onPress={() => onCashout()} style={styles.playBtnContainer}>
+          <TouchableOpacity
+            onPress={() => onCashout()}
+            style={[styles.playBtnContainer, isLoading && styles.btnDisabled]}
+            disabled={isLoading}
+          >
             <LinearGradient colors={['#ffaa00', '#cc8800']} style={styles.playBtn}>
-              <Text style={styles.playBtnText}>خذ الأرباح</Text>
+              <Text style={styles.playBtnText}>{isLoading ? 'جاري...' : 'خذ الأرباح'}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -134,7 +143,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     textAlign: 'right',
-    ...(Platform.OS === 'web' && { outlineStyle: 'none' }),
+    ...(Platform.OS === 'web' && { outlineStyle: 'none' as any }),
   },
   minMaxText: {
     color: '#888',
@@ -182,5 +191,8 @@ const styles = StyleSheet.create({
   cashoutControls: {
     flexDirection: 'column',
     gap: 10,
-  }
+  },
+  btnDisabled: {
+    opacity: 0.6,
+  },
 });

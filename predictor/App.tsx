@@ -4,6 +4,8 @@ import * as signalR from '@microsoft/signalr';
 import { PredictorGrid } from './components/PredictorGrid';
 import PredictorLogin from './components/PredictorLogin';
 import { LinearGradient } from 'expo-linear-gradient';
+import { API_BASE_URL } from './config';
+import { MULTIPLIERS } from './constants';
 
 const { width } = Dimensions.get('window');
 const isMobile = width < 768;
@@ -32,7 +34,7 @@ export default function App() {
     if (!isLoggedIn) return;
 
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("http://178.62.192.74:8081/gamehub")
+      .withUrl(`${API_BASE_URL}/gamehub`)
       .withAutomaticReconnect()
       .build();
 
@@ -58,7 +60,7 @@ export default function App() {
     }
   }, [connection, isLoggedIn, accountId]);
 
-  const currentMultiplier = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.97, 69.93, 349.68][activeRow] || 0.00;
+  const currentMultiplier = MULTIPLIERS[activeRow] ?? 0.0;
 
   if (!isLoggedIn) {
     return <PredictorLogin onLogin={(id) => {

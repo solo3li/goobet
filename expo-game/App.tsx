@@ -7,14 +7,16 @@ import LoginScreen from './components/LoginScreen';
 import ProfileDashboard from './components/ProfileDashboard';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [accountId, setAccountId] = useState('');
-  const [balance, setBalance] = useState(0);
+  const [isLoggedIn, setIsLoggedIn]     = useState(false);
+  const [accountId, setAccountId]       = useState('');
+  const [balance, setBalance]           = useState(0);
+  const [authToken, setAuthToken]       = useState('');
   const [currentScreen, setCurrentScreen] = useState<'home' | 'menu' | 'game'>('home');
 
-  const handleLogin = (id: string, initialBalance: number) => {
+  const handleLogin = (id: string, initialBalance: number, token: string) => {
     setAccountId(id);
     setBalance(initialBalance);
+    setAuthToken(token);
     setIsLoggedIn(true);
   };
 
@@ -25,19 +27,19 @@ export default function App() {
   return (
     <View style={styles.container}>
       {currentScreen === 'home' ? (
-        <HomeScreen 
+        <HomeScreen
           onPlayApple={() => setCurrentScreen('game')}
           onNavigateToMenu={() => setCurrentScreen('menu')}
         />
       ) : currentScreen === 'menu' ? (
-        <ProfileDashboard 
-          accountId={accountId} 
-          balance={balance} 
-          onOpenGame={() => setCurrentScreen('game')} 
+        <ProfileDashboard
+          accountId={accountId}
+          balance={balance}
+          onOpenGame={() => setCurrentScreen('game')}
           onNavigateToHome={() => setCurrentScreen('home')}
         />
       ) : (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <View style={styles.gameHeader}>
             <TouchableOpacity onPress={() => setCurrentScreen('menu')} style={styles.backBtn}>
               <MaterialCommunityIcons name="arrow-right" size={24} color="#fff" />
@@ -47,7 +49,12 @@ export default function App() {
               <Text style={styles.balanceTextHeader}>ج.م {balance.toFixed(2)}</Text>
             </View>
           </View>
-          <AppleGame accountId={accountId} onBalanceChange={setBalance} balance={balance} />
+          <AppleGame
+            accountId={accountId}
+            onBalanceChange={setBalance}
+            balance={balance}
+            authToken={authToken}
+          />
         </SafeAreaView>
       )}
     </View>
@@ -66,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E293B',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#334155'
+    borderBottomColor: '#334155',
   },
   backBtn: {
     flexDirection: 'row-reverse',
@@ -86,5 +93,5 @@ const styles = StyleSheet.create({
   balanceTextHeader: {
     color: '#34d399',
     fontWeight: 'bold',
-  }
+  },
 });
